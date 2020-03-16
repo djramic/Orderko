@@ -1,0 +1,2 @@
+rootProject.name='Orderko'
+include ':app'
