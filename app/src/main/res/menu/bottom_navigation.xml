@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_table"
+        android:title="Sto"
+        android:icon="@drawable/ic_all_out_black_24dp" />
+
+    <item
+        android:id="@+id/nav_drink_list"
+        android:title="Lista Pica"
+        android:icon="@drawable/ic_list_black_24dp" />
+
+    <item
+        android:id="@+id/nav_bill"
+        android:title="Racun"
+        android:icon="@drawable/ic_attach_money_black_24dp" />
+
+</menu>
