@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class ConsumerActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ImageView avatar_imvw;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

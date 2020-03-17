@@ -1,6 +1,7 @@
 package com.example.orderko;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class TableFragment extends Fragment {
-
+    private DatabaseHelper myDb;
     private NumberPicker numberPicker;
     private ImageButton pick_table_imbt;
     private TextView table_num_txvw;
@@ -22,6 +23,7 @@ public class TableFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View v = inflater.inflate(R.layout.fragment_table, container, false);
 
+       myDb = new DatabaseHelper(getActivity());
        numberPicker = v.findViewById(R.id.numberPicker);
        pick_table_imbt = v.findViewById(R.id.pick_table_imbt);
        table_num_txvw = v.findViewById(R.id.table_num_txvw);
@@ -33,6 +35,7 @@ public class TableFragment extends Fragment {
            public void onClick(View v) {
                 int table_nubmer = numberPicker.getValue();
                 table_num_txvw.setText(String.valueOf(table_nubmer));
+
            }
        });
 

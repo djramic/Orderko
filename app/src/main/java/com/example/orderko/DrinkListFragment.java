@@ -1,6 +1,8 @@
 package com.example.orderko;
 
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class DrinkListFragment extends Fragment {
-
+    private DatabaseHelper myDb;
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listaDataHeader;
@@ -25,6 +27,7 @@ public class DrinkListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_drink_list, container, false);
 
+        myDb = new DatabaseHelper(getActivity());
         initData();
         listView = v.findViewById(R.id.expandable_list);
         listAdapter = new ExpandableListAdapter(getActivity(),listaDataHeader,listHash);
@@ -42,6 +45,25 @@ public class DrinkListFragment extends Fragment {
     }
 
     private void initData() {
+
+        Cursor res = myDb.getAllData();
+        if(res.getCount() == 0){
+            Log.d("database","Baza podataka je prazna!");
+        }
+        StringBuffer buffer = new StringBuffer();
+        while (res.moveToNext()) {
+            buffer.append("ID :" + res.getString(0) + "\n");
+            buffer.append("Drink :" + res.getString(1) + "\n");
+            buffer.append("Category :" + res.getString(2) + "\n");
+            buffer.append("Bulk :" + res.getString(3) + "\n");
+            buffer.append("Quantity :" + res.getString(4) + "\n\n");
+
+        }
+
+        Log.d("database", buffer.toString());
+
+
+
         listaDataHeader = new ArrayList<>();
 
         listaDataHeader.add("Pivo");
