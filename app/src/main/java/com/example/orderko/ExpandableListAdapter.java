@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -78,8 +80,33 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item,null);
         }
-        TextView expend_list_item_txvw = convertView.findViewById(R.id.expand_list_item);
-        expend_list_item_txvw.setText(childText);
+
+        TextView expend_list_item_name_txvw = convertView.findViewById(R.id.expand_list_item_name);
+        TextView expend_list_item_quantity_txvw = convertView.findViewById(R.id.expand_list_item_quantity);
+        ImageButton add_drink_imbt = convertView.findViewById(R.id.add_drink_imbt);
+        ImageButton remove_drink_imbt = convertView.findViewById(R.id.remove_drink_imbt);
+        final EditText drink_quantity_edtx = convertView.findViewById(R.id.drink_quantity_edtx);
+
+        expend_list_item_name_txvw.setText(childText);
+        expend_list_item_quantity_txvw.setText("0,5");
+
+        add_drink_imbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int a = Integer.parseInt(drink_quantity_edtx.getText().toString());
+                drink_quantity_edtx.setText(String.valueOf(a + 1));
+            }
+        });
+
+        remove_drink_imbt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int a = Integer.parseInt(drink_quantity_edtx.getText().toString());
+                if(a > 0) {
+                    drink_quantity_edtx.setText(String.valueOf(a - 1));
+                }
+            }
+        });
         return convertView;
 
     }

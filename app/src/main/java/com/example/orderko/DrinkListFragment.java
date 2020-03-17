@@ -30,6 +30,14 @@ public class DrinkListFragment extends Fragment {
         listAdapter = new ExpandableListAdapter(getActivity(),listaDataHeader,listHash);
         listView.setAdapter(listAdapter);
 
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+                return true;
+            }
+        });
+
         return v;
     }
 
