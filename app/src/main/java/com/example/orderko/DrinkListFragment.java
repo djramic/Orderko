@@ -22,7 +22,7 @@ public class DrinkListFragment extends Fragment {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listaDataHeader;
-    private HashMap<String, List<String>> listHash;
+    private HashMap<String, List<Drink>> listHash;
     private List<Drink> drinks= new ArrayList<>();
     private DatabaseHelper myDb;
     private Button button;
@@ -94,12 +94,12 @@ public class DrinkListFragment extends Fragment {
 
         int i = 0;
         for(String category : checkList){
-            List<String> drink_add = new ArrayList<>();
+            List<Drink> drink_add = new ArrayList<>();
             for(Drink drink_check : drinks_adapter) {
                 if(category.equals(drink_check.getCategory()))
                 {
                     //Log.d("listtest", "Usao sam ovde zato sto je " + category + " isti kao " + drink_check.getCategory());
-                    drink_add.add(drink_check.getName());
+                    drink_add.add(drink_check);
                 }
             }
             listHash.put(listaDataHeader.get(i), drink_add);

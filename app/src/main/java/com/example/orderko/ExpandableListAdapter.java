@@ -1,6 +1,7 @@
 package com.example.orderko;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,20 +10,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import java.util.HashMap;
 import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
-
+    private DatabaseHelper myDb;
     private Context context;
     private List<String> listDataHeader;
-    private HashMap<String, List<String>> listHashMap;
+    private HashMap<String, List<Drink>> listHashMap;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listHashMap) {
+    public ExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<Drink>> listHashMap) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listHashMap = listHashMap;
     }
+
 
     @Override
     public int getGroupCount() {
@@ -74,12 +78,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        final String childText = (String)getChild(groupPosition,childPosition);
+        final Drink childDrink = (Drink)getChild(groupPosition,childPosition);
         if(convertView == null)
         {
             LayoutInflater inflater = (LayoutInflater)this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item,null);
         }
+        myDb = new DatabaseHelper(convertView.getContext());
 
         TextView expend_list_item_name_txvw = convertView.findViewById(R.id.expand_list_item_name);
         TextView expend_list_item_quantity_txvw = convertView.findViewById(R.id.expand_list_item_quantity);
@@ -87,7 +92,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageButton remove_drink_imbt = convertView.findViewById(R.id.remove_drink_imbt);
         final EditText drink_quantity_edtx = convertView.findViewById(R.id.drink_quantity_edtx);
 
-        expend_list_item_name_txvw.setText(childText);
+        expend_list_item_name_txvw.setText(childDrink.getName());
+        expend_list_item_quantity_txvw.setText(childDrink.getQuantity());
         expend_list_item_quantity_txvw.setText("0,5");
 
         add_drink_imbt.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +101,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
                 int a = Integer.parseInt(drink_quantity_edtx.getText().toString());
                 drink_quantity_edtx.setText(String.valueOf(a + 1));
+                myDb.updateQuantity(Integer.parseInt(childDrink.getId()),String.valueOf(a+1));
             }
         });
 
@@ -104,6 +111,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 int a = Integer.parseInt(drink_quantity_edtx.getText().toString());
                 if(a > 0) {
                     drink_quantity_edtx.setText(String.valueOf(a - 1));
+                    myDb.updateQuantity(Integer.parseInt(childDrink.getId()),String.valueOf(a-1));
                 }
             }
         });
