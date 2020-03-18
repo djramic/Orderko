@@ -70,7 +70,7 @@ public class ConsumerActivity extends AppCompatActivity {
                                                 String category = document.getData().get("Category").toString();
                                                 String bulk = document.getData().get("Bulk").toString();
                                                 //Log.w("firestoretest", "Naziv pica: " + name + ", Kategorija pica: " + category + ", Kolicina pica: " + bulk);
-                                                drink = new Drink(name,category,bulk);
+                                                drink = new Drink("0",name,category,bulk,"0");
                                                 drinks.add(drink);
 
                                             }

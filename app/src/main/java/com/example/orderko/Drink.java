@@ -3,14 +3,34 @@ package com.example.orderko;
 import java.io.Serializable;
 
 public class Drink implements Serializable {
+    private String id;
     private String name;
     private String category;
     private String bulk;
+    private String quantity;
 
-    public Drink(String name, String category, String bulk) {
+    public Drink(String id, String name, String category, String bulk, String quantity) {
+        this.id = id;
         this.name = name;
         this.category = category;
         this.bulk = bulk;
+        this.quantity = quantity;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getQuantity() {
+        return quantity;
     }
 
     public String getName() {

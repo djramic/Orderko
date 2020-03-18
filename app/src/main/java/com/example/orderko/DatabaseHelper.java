@@ -25,8 +25,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("create table " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, DRINK TEXT,CATEGORY TEXT," +
-                "BULK INTEGER,QUANTITY INTEGER)");
+                "BULK INTEGER,QUANTITY TEXT)");
     }
 
     @Override
@@ -55,5 +56,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from " + TABLE_NAME, null);
         return res;
+    }
+
+    public void clearTable(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_NAME);
+    }
+    public boolean updateQuantity(int id, String quantity){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COL_5,quantity);
+        long res = db.update(TABLE_NAME, cv, "ID="+id, null);
+        if(res == -1) {
+            return false;
+        }else {
+            return true;
+        }
     }
 }
