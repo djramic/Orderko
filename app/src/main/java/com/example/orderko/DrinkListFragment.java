@@ -54,7 +54,7 @@ public class DrinkListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 StringBuffer buffer = new StringBuffer();
-                Cursor res = myDb.getAllData();
+                Cursor res = myDb.getOrder();
                 while (res.moveToNext()) {
                     buffer.append("ID :" + res.getString(0) + "\n");
                     buffer.append("Drink :" + res.getString(1) + "\n");
@@ -64,6 +64,8 @@ public class DrinkListFragment extends Fragment {
 
                 }
                 Log.d("databasetest" , buffer.toString());
+
+
             }
         });
 
