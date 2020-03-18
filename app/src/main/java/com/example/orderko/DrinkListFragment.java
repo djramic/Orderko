@@ -1,6 +1,5 @@
 package com.example.orderko;
 
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +74,7 @@ public class DrinkListFragment extends Fragment {
             listHash.put(listaDataHeader.get(i), drink_add);
             i++;
         }
-        
+
 
     }
 }
