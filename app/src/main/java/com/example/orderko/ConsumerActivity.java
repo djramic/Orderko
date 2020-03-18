@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class ConsumerActivity extends AppCompatActivity {
                                                 String name = document.getData().get("Name").toString();
                                                 String category = document.getData().get("Category").toString();
                                                 String bulk = document.getData().get("Bulk").toString();
-                                                Log.w("firestoretest", "Naziv pica: " + name + ", Kategorija pica: " + category + ", Kolicina pica: " + bulk);
+                                                //Log.w("firestoretest", "Naziv pica: " + name + ", Kategorija pica: " + category + ", Kolicina pica: " + bulk);
                                                 drink = new Drink(name,category,bulk);
                                                 drinks.add(drink);
 
@@ -103,12 +104,16 @@ public class ConsumerActivity extends AppCompatActivity {
                                 break;
                             case R.id.nav_drink_list:
                                 selectedFragment = new DrinkListFragment();
+                                Bundle args = new Bundle();
+                                args.putSerializable("DrinkList", (Serializable)drinks);
+                                selectedFragment.setArguments(args);
                                 break;
                             case R.id.nav_bill:
                                 selectedFragment = new BillFragment();
                                 break;
 
                         }
+
                         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner, selectedFragment)
                                 .commit();
                         return true;

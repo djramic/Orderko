@@ -14,23 +14,25 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DrinkListFragment extends Fragment {
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DatabaseHelper myDb;
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
     private List<String> listaDataHeader;
     private HashMap<String, List<String>> listHash;
+    private List<Drink> drinks= new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_drink_list, container, false);
 
-        myDb = new DatabaseHelper(getActivity());
+        drinks = (List<Drink>)getArguments().get("DrinkList");
+        Log.d("firestoretest",drinks.toString());
+
         initData();
         listView = v.findViewById(R.id.expandable_list);
         listAdapter = new ExpandableListAdapter(getActivity(),listaDataHeader,listHash);
@@ -49,52 +51,34 @@ public class DrinkListFragment extends Fragment {
 
     private void initData() {
 
-        Cursor res = myDb.getAllData();
-        if(res.getCount() == 0){
-            Log.d("database","Baza podataka je prazna!");
-        }
-
-
-
-        StringBuffer buffer = new StringBuffer();
-        while (res.moveToNext()) {
-            buffer.append("ID :" + res.getString(0) + "\n");
-            buffer.append("Drink :" + res.getString(1) + "\n");
-            buffer.append("Category :" + res.getString(2) + "\n");
-            buffer.append("Bulk :" + res.getString(3) + "\n");
-            buffer.append("Quantity :" + res.getString(4) + "\n\n");
-
-        }
-
-        Log.d("database", buffer.toString());
-
-
-
+        ArrayList<String> checkList = new ArrayList<>();
         listaDataHeader = new ArrayList<>();
 
-        listaDataHeader.add("Pivo");
-        listaDataHeader.add("Zestina");
-        listaDataHeader.add("Sokovi");
+        for(Drink drink : drinks) {
+            if(!checkList.contains(drink.getCategory())){
+                listaDataHeader.add(drink.getCategory());
+                checkList.add(drink.getCategory());
+            }
+        }
+        Log.d("listtest",listaDataHeader.toString());
 
-        List<String> piva = new ArrayList<>();
-        piva.add("jelen");
-        piva.add("lav");
-        piva.add("zajacarac");
-
-        List<String> zestina = new ArrayList<>();
-        zestina.add("vinjak");
-        zestina.add("rakija");
-        zestina.add("konjak");
-
-        List<String> sokovi = new ArrayList<>();
-        sokovi.add("kola");
-        sokovi.add("sprajt");
-        sokovi.add("jabuka");
 
         listHash = new HashMap<>();
-        listHash.put(listaDataHeader.get(0), piva);
-        listHash.put(listaDataHeader.get(1), zestina);
-        listHash.put(listaDataHeader.get(2), sokovi);
+
+        int i = 0;
+        for(String category : checkList){
+            List<String> drink_add = new ArrayList<>();
+            for(Drink drink_check : drinks) {
+                if(category.equals(drink_check.getCategory()))
+                {
+                    //Log.d("listtest", "Usao sam ovde zato sto je " + category + " isti kao " + drink_check.getCategory());
+                    drink_add.add(drink_check.getName());
+                }
+            }
+            listHash.put(listaDataHeader.get(i), drink_add);
+            i++;
+        }
+        
 
     }
 }
