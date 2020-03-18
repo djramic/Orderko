@@ -12,11 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DrinkListFragment extends Fragment {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DatabaseHelper myDb;
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
@@ -50,6 +53,9 @@ public class DrinkListFragment extends Fragment {
         if(res.getCount() == 0){
             Log.d("database","Baza podataka je prazna!");
         }
+
+
+
         StringBuffer buffer = new StringBuffer();
         while (res.moveToNext()) {
             buffer.append("ID :" + res.getString(0) + "\n");

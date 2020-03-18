@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "185003204042",
+    "firebase_url": "https://orderko-83a6e.firebaseio.com",
+    "project_id": "orderko-83a6e",
+    "storage_bucket": "orderko-83a6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:185003204042:android:e30c8ae1cc76ad1e458333",
+        "android_client_info": {
+          "package_name": "com.example.orderko"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "185003204042-u7tvkuaghlf5nqtfvbtln7bt9egdf7ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjPp88z9kBTF1iSVdIA1nLK_TQlMkjn7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "185003204042-u7tvkuaghlf5nqtfvbtln7bt9egdf7ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
