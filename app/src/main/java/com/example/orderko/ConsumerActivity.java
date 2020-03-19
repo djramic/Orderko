@@ -107,6 +107,7 @@ public class ConsumerActivity extends AppCompatActivity {
                                 selectedFragment = new DrinkListFragment();
                                 Bundle args = new Bundle();
                                 args.putSerializable("DrinkList", (Serializable)drinks);
+                                args.putSerializable("Club", "bello");
                                 selectedFragment.setArguments(args);
                                 break;
                             case R.id.nav_bill:

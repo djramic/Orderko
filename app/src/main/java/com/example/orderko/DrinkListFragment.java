@@ -19,18 +19,22 @@ import androidx.fragment.app.Fragment;
 
 import com.diegodobelo.expandingview.ExpandingItem;
 import com.diegodobelo.expandingview.ExpandingList;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DrinkListFragment extends Fragment {
-    private ExpandableListView listView;
-    private HashMap<String, List<Drink>> listHash;
     private List<Drink> drinks= new ArrayList<>();
+    private String club;
     private DatabaseHelper myDb;
     private Button button;
     private ExpandingList expandingList;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
+
 
 
     @Nullable
@@ -42,7 +46,13 @@ public class DrinkListFragment extends Fragment {
 
         myDb = new DatabaseHelper(getActivity());
         drinks = (List<Drink>)getArguments().get("DrinkList");
-        Log.d("firestoretest",drinks.toString());
+        club = (String)getArguments().get("Club");
+        Log.d("databasetest","Klub koji trazim: " + club);
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference(club);
+
+        //Log.d("firestoretest",drinks.toString());
         myDb.clearTable();
         for(Drink drink : drinks) {
             boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0");
@@ -50,6 +60,7 @@ public class DrinkListFragment extends Fragment {
                 Log.d("databasetest","Eroor while adding");
             }
         }
+        initData();
 
 
         button = v.findViewById(R.id.order_but);
@@ -61,19 +72,25 @@ public class DrinkListFragment extends Fragment {
                 StringBuffer buffer = new StringBuffer();
                 Cursor res = myDb.getOrder();
                 while (res.moveToNext()) {
-                    buffer.append("ID :" + res.getString(0) + "\n");
+                    /*buffer.append("ID :" + res.getString(0) + "\n");
                     buffer.append("Drink :" + res.getString(1) + "\n");
                     buffer.append("Category :" + res.getString(2) + "\n");
                     buffer.append("Bulk :" + res.getString(3) + "\n");
-                    buffer.append("Quantity :" + res.getString(4) + "\n\n");
-
+                    buffer.append("Quantity :" + res.getString(4) + "\n\n");*/
+                    Order order = new Order(res.getString(1), res.getString(4),res.getString(3),"1");
+                    String id = myRef.push().getKey();
+                    myRef.child(id).setValue(order);
                 }
                 Log.d("databasetest" , buffer.toString());
 
 
+
+
+
+
             }
         });
-        initData();
+
         return v;
     }
 
@@ -96,7 +113,7 @@ public class DrinkListFragment extends Fragment {
                 categorys.add(d.getCategory());
             }
         }
-        Log.d("listtest",categorys.toString());
+        //Log.d("listtest",categorys.toString());
 
         for(String ctg : categorys) {
             ExpandingItem item = expandingList.createNewItem(R.layout.expanding_layout);
@@ -109,7 +126,7 @@ public class DrinkListFragment extends Fragment {
                 View v = item.getSubItemView(i);
                 final String id = rez.getString(0);
                 ((TextView) v.findViewById(R.id.sub_title)).setText(rez.getString(1));
-                ((TextView) v.findViewById(R.id.sub_bulk)).setText(rez.getString(3));
+                ((TextView) v.findViewById(R.id.sub_bulk)).setText(rez.getString(3) + "l");
                 final EditText sub_quantity = v.findViewById(R.id.sub_quantity);
 
                 ((ImageButton) v.findViewById(R.id.sub_add_but)).setOnClickListener(new View.OnClickListener() {

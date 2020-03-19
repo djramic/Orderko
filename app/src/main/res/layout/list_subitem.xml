@@ -32,7 +32,8 @@
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:layout_toLeftOf="@+id/sub_quantity"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:background="@android:color/transparent"/>
 
     <ImageButton
         android:id="@+id/sub_remove_but"
@@ -41,7 +42,8 @@
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentRight="true"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_delete"
+        android:background="@android:color/transparent"/>
 
     <EditText
         android:id="@+id/sub_quantity"
