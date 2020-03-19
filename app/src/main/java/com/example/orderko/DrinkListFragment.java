@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,7 +51,7 @@ public class DrinkListFragment extends Fragment {
             }
         }
 
-        initData();
+
         button = v.findViewById(R.id.order_but);
 
 
@@ -71,7 +73,7 @@ public class DrinkListFragment extends Fragment {
 
             }
         });
-
+        initData();
         return v;
     }
 
@@ -84,6 +86,7 @@ public class DrinkListFragment extends Fragment {
                     res.getString(4));
             drinks_adapter.add(drink);
         }
+
 
 
         ArrayList<String> categorys = new ArrayList<>();
@@ -102,8 +105,33 @@ public class DrinkListFragment extends Fragment {
             item.createSubItems(rez.getCount());
             int i = 0;
             while(rez.moveToNext()) {
+
                 View v = item.getSubItemView(i);
+                final String id = rez.getString(0);
                 ((TextView) v.findViewById(R.id.sub_title)).setText(rez.getString(1));
+                ((TextView) v.findViewById(R.id.sub_bulk)).setText(rez.getString(3));
+                final EditText sub_quantity = v.findViewById(R.id.sub_quantity);
+
+                ((ImageButton) v.findViewById(R.id.sub_add_but)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final int sub_quant = Integer.parseInt(sub_quantity.getText().toString());
+                        myDb.updateQuantity(Integer.parseInt(id),String.valueOf(sub_quant+1));
+                        sub_quantity.setText(String.valueOf(sub_quant+1));
+                    }
+                });
+
+                ((ImageButton)v.findViewById(R.id.sub_remove_but)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final int sub_quant = Integer.parseInt(sub_quantity.getText().toString());
+                        if(sub_quant > 0) {
+                            myDb.updateQuantity(Integer.parseInt(id),String.valueOf(sub_quant-1));
+                            sub_quantity.setText(String.valueOf(sub_quant-1));
+                        }
+                    }
+                });
+
                 i++;
             }
 
