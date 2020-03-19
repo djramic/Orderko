@@ -81,4 +81,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getDrinksOf(String categoy) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from " + TABLE_NAME + " where CATEGORY = '" + categoy + "'", null);
+        return res;
+    }
+
+
 }

@@ -9,10 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.diegodobelo.expandingview.ExpandingItem;
+import com.diegodobelo.expandingview.ExpandingList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,18 +24,19 @@ import java.util.List;
 
 public class DrinkListFragment extends Fragment {
     private ExpandableListView listView;
-    private ExpandableListAdapter listAdapter;
-    private List<String> listaDataHeader;
     private HashMap<String, List<Drink>> listHash;
     private List<Drink> drinks= new ArrayList<>();
     private DatabaseHelper myDb;
     private Button button;
+    private ExpandingList expandingList;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_drink_list, container, false);
+
+        expandingList = v.findViewById(R.id.expanding_list_main);
 
         myDb = new DatabaseHelper(getActivity());
         drinks = (List<Drink>)getArguments().get("DrinkList");
@@ -45,10 +50,8 @@ public class DrinkListFragment extends Fragment {
         }
 
         initData();
-        listView = v.findViewById(R.id.expandable_list);
         button = v.findViewById(R.id.order_but);
-        listAdapter = new ExpandableListAdapter(getActivity(),listaDataHeader,listHash);
-        listView.setAdapter(listAdapter);
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,30 +85,28 @@ public class DrinkListFragment extends Fragment {
             drinks_adapter.add(drink);
         }
 
-        ArrayList<String> checkList = new ArrayList<>();
-        listaDataHeader = new ArrayList<>();
-        listHash = new HashMap<>();
+
+        ArrayList<String> categorys = new ArrayList<>();
 
         for(Drink d : drinks_adapter) {
-            if(!checkList.contains(d.getCategory())){
-                listaDataHeader.add(d.getCategory());
-                checkList.add(d.getCategory());
+            if(!categorys.contains(d.getCategory())){
+                categorys.add(d.getCategory());
             }
         }
-        Log.d("listtest",listaDataHeader.toString());
+        Log.d("listtest",categorys.toString());
 
-        int i = 0;
-        for(String category : checkList){
-            List<Drink> drink_add = new ArrayList<>();
-            for(Drink drink_check : drinks_adapter) {
-                if(category.equals(drink_check.getCategory()))
-                {
-                    //Log.d("listtest", "Usao sam ovde zato sto je " + category + " isti kao " + drink_check.getCategory());
-                    drink_add.add(drink_check);
-                }
+        for(String ctg : categorys) {
+            ExpandingItem item = expandingList.createNewItem(R.layout.expanding_layout);
+            ((TextView) item.findViewById(R.id.title)).setText(ctg);
+            Cursor rez = myDb.getDrinksOf(ctg);
+            item.createSubItems(rez.getCount());
+            int i = 0;
+            while(rez.moveToNext()) {
+                View v = item.getSubItemView(i);
+                ((TextView) v.findViewById(R.id.sub_title)).setText(rez.getString(1));
+                i++;
             }
-            listHash.put(listaDataHeader.get(i), drink_add);
-            i++;
+
         }
 
     }

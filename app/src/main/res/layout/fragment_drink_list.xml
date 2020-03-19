@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_blue_dark">
 
-    <ExpandableListView
-        android:id="@+id/expandable_list"
+    <com.diegodobelo.expandingview.ExpandingList
+        android:id="@+id/expanding_list_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="10dp"
