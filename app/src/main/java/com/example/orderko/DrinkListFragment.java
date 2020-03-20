@@ -77,16 +77,12 @@ public class DrinkListFragment extends Fragment {
                     buffer.append("Category :" + res.getString(2) + "\n");
                     buffer.append("Bulk :" + res.getString(3) + "\n");
                     buffer.append("Quantity :" + res.getString(4) + "\n\n");*/
-                    Order order = new Order(res.getString(1), res.getString(4),res.getString(3),"1");
                     String id = myRef.push().getKey();
+                    Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),"1");
                     myRef.child(id).setValue(order);
                 }
                 Log.d("databasetest" , buffer.toString());
-
-
-
-
-
+                getFragmentManager().beginTransaction().detach(DrinkListFragment.this).attach(DrinkListFragment.this).commit();
 
             }
         });
@@ -120,6 +116,31 @@ public class DrinkListFragment extends Fragment {
             ((TextView) item.findViewById(R.id.title)).setText(ctg);
             Cursor rez = myDb.getDrinksOf(ctg);
             item.createSubItems(rez.getCount());
+
+            if(ctg.equals("Pivo")) {
+                Log.d("colortest","usao sam ovde");
+                item.setIndicatorColorRes(R.color.yellow);
+                item.setIndicatorIconRes(R.drawable.beer_drink);
+            }
+
+            if(ctg.equals("Vino")) {
+                Log.d("colortest","usao sam ovde");
+                item.setIndicatorColorRes(R.color.red);
+                item.setIndicatorIconRes(R.drawable.vine_dink);
+            }
+
+            if(ctg.equals("Zestina")) {
+                Log.d("colortest","usao sam ovde");
+                item.setIndicatorColorRes(R.color.white);
+                item.setIndicatorIconRes(R.drawable.alcohol_drink);
+            }
+
+            if(ctg.equals("Sok")) {
+                Log.d("colortest","usao sam ovde");
+                item.setIndicatorColorRes(R.color.orange);
+                item.setIndicatorIconRes(R.drawable.soda_dink);
+            }
+
             int i = 0;
             while(rez.moveToNext()) {
 
@@ -127,7 +148,7 @@ public class DrinkListFragment extends Fragment {
                 final String id = rez.getString(0);
                 ((TextView) v.findViewById(R.id.sub_title)).setText(rez.getString(1));
                 ((TextView) v.findViewById(R.id.sub_bulk)).setText(rez.getString(3) + "l");
-                final EditText sub_quantity = v.findViewById(R.id.sub_quantity);
+                final TextView sub_quantity = v.findViewById(R.id.sub_quantity);
 
                 ((ImageButton) v.findViewById(R.id.sub_add_but)).setOnClickListener(new View.OnClickListener() {
                     @Override

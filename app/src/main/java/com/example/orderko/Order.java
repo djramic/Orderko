@@ -1,17 +1,37 @@
 package com.example.orderko;
 
 public class Order {
+    private String id;
     private String name;
     private String quantity;
+    private String category;
     private String bulk;
     private String table;
 
 
-    public Order(String name, String quantity, String bulk, String table) {
+    public Order(String id, String name,String category, String quantity, String bulk, String table) {
         this.name = name;
         this.quantity = quantity;
         this.bulk = bulk;
         this.table = table;
+        this.id = id;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setTable(String table) {

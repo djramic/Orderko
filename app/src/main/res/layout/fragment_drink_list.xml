@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_dark">
+    android:background="@color/colorBackground">
 
     <com.diegodobelo.expandingview.ExpandingList
         android:id="@+id/expanding_list_main"
@@ -25,5 +25,7 @@
         android:text="Naruči"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:background="@android:color/transparent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
