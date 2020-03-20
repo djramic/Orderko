@@ -82,7 +82,7 @@ public class DrinkListFragment extends Fragment {
                     buffer.append("Bulk :" + res.getString(3) + "\n");
                     buffer.append("Quantity :" + res.getString(4) + "\n\n");*/
                     String id = myRef.push().getKey();
-                    Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),"1");
+                    Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),user.getTable());
                     myRef.child(id).setValue(order);
                 }
                 Log.d("databasetest" , buffer.toString());
