@@ -18,11 +18,13 @@ public class TableFragment extends Fragment {
     private NumberPicker numberPicker;
     private ImageButton pick_table_imbt;
     private TextView table_num_txvw;
+    private User user;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View v = inflater.inflate(R.layout.fragment_table, container, false);
 
+       user = User.getInstance();
        myDb = new DatabaseHelper(getActivity());
        numberPicker = v.findViewById(R.id.numberPicker);
        pick_table_imbt = v.findViewById(R.id.pick_table_imbt);
@@ -30,11 +32,17 @@ public class TableFragment extends Fragment {
        numberPicker.setMinValue(0);
        numberPicker.setMaxValue(10);
 
+       if(user.getTable() != null){
+           table_num_txvw.setText(user.getTable());
+       }
+
        pick_table_imbt.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                 int table_nubmer = numberPicker.getValue();
                 table_num_txvw.setText(String.valueOf(table_nubmer));
+                user.setTable(String.valueOf(table_nubmer));
+
 
            }
        });

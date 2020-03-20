@@ -34,6 +34,7 @@ public class DrinkListFragment extends Fragment {
     private ExpandingList expandingList;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private User user;
 
 
 
@@ -43,6 +44,9 @@ public class DrinkListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_drink_list, container, false);
 
         expandingList = v.findViewById(R.id.expanding_list_main);
+        user = User.getInstance();
+
+        Log.d("usertable","Imas sto:" +  user.getTable());
 
         myDb = new DatabaseHelper(getActivity());
         drinks = (List<Drink>)getArguments().get("DrinkList");

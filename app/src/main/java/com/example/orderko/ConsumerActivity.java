@@ -32,11 +32,13 @@ public class ConsumerActivity extends AppCompatActivity {
     private Drink drink;
     private List<Drink> drinks = new ArrayList<>();
     private String club_id;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumer);
+        user = User.getInstance();
 
         db.collection("Clubs")
                 .get()
