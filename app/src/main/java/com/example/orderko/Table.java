@@ -1,9 +1,13 @@
 package com.example.orderko;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Table {
     private String id;
     private String table_number;
     private String password;
+
 
     public String getId() {
         return id;
@@ -29,11 +33,15 @@ public class Table {
         this.password = password;
     }
 
+
+
     public Table(String id, String table_number, String password) {
         this.id = id;
         this.table_number = table_number;
         this.password = password;
+
     }
+
     public Table() {
 
     }
