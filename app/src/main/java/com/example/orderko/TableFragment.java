@@ -78,8 +78,7 @@ public class TableFragment extends Fragment {
            public void onClick(View v) {
                 ArrayList<String> table_search = new ArrayList<>();
                 int table_nubmer = numberPicker.getValue();
-                table_num_txvw.setText(String.valueOf(table_nubmer));
-                user.setTable(String.valueOf(table_nubmer));
+
 
                 if(tables.size() > 0) {
                     for (Table t : tables) {
@@ -93,8 +92,11 @@ public class TableFragment extends Fragment {
                         Log.d("tables","usao sam vode....");
                         String id = tableRef.push().getKey();
                         int random = new Random().nextInt((8999) + 1000);
+                        user.setPassword(String.valueOf(random));
                         Table table = new Table(id, String.valueOf(table_nubmer), String.valueOf(random));
                         tableRef.child(id).setValue(table);
+                        table_num_txvw.setText(String.valueOf(table_nubmer));
+                        user.setTable(String.valueOf(table_nubmer));
                     }
 
 
@@ -104,6 +106,8 @@ public class TableFragment extends Fragment {
                     int random = new Random().nextInt((8999) + 1000);
                     Table table = new Table(id, String.valueOf(table_nubmer), String.valueOf(random));
                     tableRef.child(id).setValue(table);
+                    table_num_txvw.setText(String.valueOf(table_nubmer));
+                    user.setTable(String.valueOf(table_nubmer));
                 }
 
 

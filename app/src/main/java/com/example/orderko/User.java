@@ -3,6 +3,7 @@ package com.example.orderko;
 public class User {
     private String username;
     private String table;
+    private String password;
     private static User user;
 
     public static  User getInstance() {
@@ -12,6 +13,22 @@ public class User {
     }
 
     public User() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public static User getUser() {
+        return user;
+    }
+
+    public static void setUser(User user) {
+        User.user = user;
     }
 
     public String getUsername() {
@@ -30,8 +47,9 @@ public class User {
         this.table = table;
     }
 
-    public User(String username, String table) {
+    public User(String username, String table, String password) {
         this.username = username;
         this.table = table;
+        this.password = password;
     }
 }

@@ -10,12 +10,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,18 +30,26 @@ import java.util.List;
 
 public class ConsumerActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth;
     private BottomNavigationView bottomNavigationView;
     private ImageView avatar_imvw;
     private Drink drink;
     private List<Drink> drinks = new ArrayList<>();
     private String club_id;
     private User user;
+    private TextView username_txtv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumer);
         user = User.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        avatar_imvw = findViewById(R.id.avatar_imvw);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        username_txtv = findViewById(R.id.consumer_username_txvw);
+
 
         db.collection("Clubs")
                 .get()
@@ -88,8 +99,7 @@ public class ConsumerActivity extends AppCompatActivity {
 
 
 
-        avatar_imvw = findViewById(R.id.avatar_imvw);
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
 
         avatar_imvw.setImageResource(R.drawable.avatar);
 
@@ -124,5 +134,18 @@ public class ConsumerActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    @Override
+    public void onStart() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUi(currentUser);
+        super.onStart();
+    }
+
+    private void updateUi(FirebaseUser currentUser) {
+        if(currentUser != null){
+            username_txtv.setText(currentUser.getEmail());
+        }
     }
 }
