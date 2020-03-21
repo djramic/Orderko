@@ -34,6 +34,7 @@ public class DrinkListFragment extends Fragment {
     private ExpandingList expandingList;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private DatabaseReference tableRef;
     private User user;
 
 
@@ -54,7 +55,9 @@ public class DrinkListFragment extends Fragment {
         Log.d("databasetest","Klub koji trazim: " + club);
 
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(club);
+        myRef = database.getReference(club + "/orders");
+        tableRef = database.getReference(club + "/tables");
+
 
         //Log.d("firestoretest",drinks.toString());
         myDb.clearTable();
