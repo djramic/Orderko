@@ -33,7 +33,6 @@ import java.util.List;
 
 public class ConsumerActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth mAuth;
     private BottomNavigationView bottomNavigationView;
     private ImageView avatar_imvw;
     private Drink drink;
@@ -48,7 +47,6 @@ public class ConsumerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consumer);
         user = User.getInstance();
-        mAuth = FirebaseAuth.getInstance();
         userDb = new UserDatabaseHelper(ConsumerActivity.this);
 
         avatar_imvw = findViewById(R.id.avatar_imvw);
@@ -108,11 +106,6 @@ public class ConsumerActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
         avatar_imvw.setImageResource(R.drawable.avatar);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner, new TableFragment())
@@ -148,22 +141,6 @@ public class ConsumerActivity extends AppCompatActivity {
         );
     }
 
-    @Override
-    public void onStart() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        user.setUsername(currentUser.getEmail());
-
-        updateUi(currentUser);
-        super.onStart();
-    }
-
-
-    private void updateUi(FirebaseUser currentUser) {
-        if(currentUser != null){
-            username_txtv.setText(currentUser.getEmail());
-        }
-
-    }
 
     private void leave_table(){
         Log.d("leave","napustam stoo" + user.getTable() );
