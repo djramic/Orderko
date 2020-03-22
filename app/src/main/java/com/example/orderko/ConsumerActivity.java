@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,6 +41,7 @@ public class ConsumerActivity extends AppCompatActivity {
     private String club_id;
     private User user;
     private TextView username_txtv;
+    private UserDatabaseHelper userDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class ConsumerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_consumer);
         user = User.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        userDb = new UserDatabaseHelper(ConsumerActivity.this);
 
         avatar_imvw = findViewById(R.id.avatar_imvw);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -95,6 +100,13 @@ public class ConsumerActivity extends AppCompatActivity {
                     }
                 });
 
+        Cursor cur = userDb.getData();
+        while(cur.moveToNext()) {
+            String table_number = cur.getString(3);
+                user.setTable(table_number);
+        }
+
+
 
 
 
@@ -139,13 +151,25 @@ public class ConsumerActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        user.setUsername(currentUser.getEmail());
+
         updateUi(currentUser);
         super.onStart();
     }
+
 
     private void updateUi(FirebaseUser currentUser) {
         if(currentUser != null){
             username_txtv.setText(currentUser.getEmail());
         }
+
+    }
+
+    private void leave_table(){
+        Log.d("leave","napustam stoo" + user.getTable() );
+        String table = user.getTable();
+        DatabaseReference tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(table);
+        tableDelRef.removeValue();
+
     }
 }
