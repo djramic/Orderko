@@ -1,7 +1,6 @@
 package com.example.orderko;
 
 public class User {
-    private String username;
     private String table;
     private String password;
     private static User user;
@@ -31,13 +30,6 @@ public class User {
         User.user = user;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getTable() {
         return table;
@@ -47,8 +39,7 @@ public class User {
         this.table = table;
     }
 
-    public User(String username, String table, String password) {
-        this.username = username;
+    public User(String table, String password) {
         this.table = table;
         this.password = password;
     }

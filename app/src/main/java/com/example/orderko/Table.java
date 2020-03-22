@@ -7,6 +7,7 @@ public class Table {
     private String id;
     private String table_number;
     private String password;
+    private String users_num;
 
 
     public String getId() {
@@ -33,13 +34,19 @@ public class Table {
         this.password = password;
     }
 
+    public String getUsers_num() {
+        return users_num;
+    }
 
+    public void setUsers_num(String users_num) {
+        this.users_num = users_num;
+    }
 
-    public Table(String id, String table_number, String password) {
+    public Table(String id, String table_number, String password, String users_num) {
         this.id = id;
         this.table_number = table_number;
         this.password = password;
-
+        this.users_num = users_num;
     }
 
     public Table() {

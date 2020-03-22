@@ -41,7 +41,7 @@
         android:textSize="30sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/numberPicker" />
+        app:layout_constraintTop_toTopOf="@+id/textView3" />
 
     <ImageButton
         android:id="@+id/pick_table_imbt"
@@ -130,10 +130,11 @@
         android:id="@+id/tablef_confiram_pass_imbt"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tablef_table_password_edtx"
-        app:layout_constraintStart_toStartOf="@+id/tablef_table_password_edtx"
+        app:layout_constraintTop_toBottomOf="@+id/tablef_table_password_edtx"
         app:srcCompat="@drawable/ic_check_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
