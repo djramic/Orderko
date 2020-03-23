@@ -105,7 +105,7 @@ public class TableFragment extends Fragment {
                     }
                     else {
                         if(user.getTable() != null) {
-                            leave_table(getUsersNumber(String.valueOf(table_nubmer)));
+                            leave_table(getUsersNumber(user.getTable()));
                         }
                         taken_visibility(View.INVISIBLE);
                         users_numbs = getUsersNumber(String.valueOf(table_nubmer));
@@ -115,7 +115,7 @@ public class TableFragment extends Fragment {
 
                 }else {
                     if(user.getTable() != null) {
-                        leave_table(getUsersNumber(String.valueOf(table_nubmer)));
+                        leave_table(getUsersNumber(user.getTable()));
                     }
                     taken_visibility(View.INVISIBLE);
                     users_numbs = getUsersNumber(String.valueOf(table_nubmer));
