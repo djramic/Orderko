@@ -82,6 +82,7 @@ public class TableFragment extends Fragment {
         });
 
         if(user.getTable() != null){
+            table_num_txvw.setTextSize(60);
             table_num_txvw.setText(user.getTable());
         }
 
@@ -180,6 +181,7 @@ public class TableFragment extends Fragment {
         user.setPassword(String.valueOf(random));
         Table table = new Table(table_number, table_number, String.valueOf(random),String.valueOf(table_usrs+1));
         tableRef.child(table_number).setValue(table);
+        table_num_txvw.setTextSize(60);
         table_num_txvw.setText(table_number);
         user.setTable(table_number);
         userDb.insertData("0","mAuth.getCurrentUser().getEmail()",table_number);
@@ -193,6 +195,7 @@ public class TableFragment extends Fragment {
         if(users_numb.equals("0") || users_numb.equals("1")) { // TO - DO
             tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(user.getTable());
             tableDelRef.removeValue();
+            table_num_txvw.setTextSize(40);
             table_num_txvw.setText("Nemaš sto");
             user.setTable(null);
             userDb.clearTable();
@@ -205,6 +208,7 @@ public class TableFragment extends Fragment {
             tableRef.child(user.getTable()).setValue(t);
             user.setTable(null);
             userDb.clearTable();
+            table_num_txvw.setTextSize(40);
             table_num_txvw.setText("Nemaš sto");
             Log.d("tables", "usao sam u leave_table,  user ima vrednost:" + user.getTable());
         }
@@ -233,9 +237,11 @@ public class TableFragment extends Fragment {
         Log.d("tables","usao sam u onStart,  user ima vrednost:" + user.getTable() );
 
         if(user.getTable() != null) {
+            table_num_txvw.setTextSize(60);
             table_num_txvw.setText(user.getTable());
         }
         else {
+            table_num_txvw.setTextSize(40);
             table_num_txvw.setText("Nemas sto");
         }
 

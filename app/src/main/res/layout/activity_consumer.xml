@@ -11,7 +11,7 @@
         android:layout_height="50dp"
         android:id="@+id/bottom_navigation"
         app:menu="@menu/bottom_navigation"
-        android:background="@color/separatorColor"
+        android:background="@color/menuBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -41,7 +41,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/separatorColor"
+        android:background="@color/menuBackground"
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
