@@ -121,7 +121,7 @@
         android:layout_marginRight="20dp"
         android:visibility="invisible"
         android:ems="10"
-        android:hint="password"
+        android:hint="pristupni kod"
         android:inputType="number"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -137,7 +137,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/tablef_table_password_edtx"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tablef_table_password_edtx"
         app:srcCompat="@drawable/ic_check_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
