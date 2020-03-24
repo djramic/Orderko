@@ -63,7 +63,7 @@ public class DrinkListFragment extends Fragment {
         //Log.d("firestoretest",drinks.toString());
         myDb.clearTable();
         for(Drink drink : drinks) {
-            boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0");
+            boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0",drink.getPrice());
             if(!isInserted){
                 Log.d("databasetest","Eroor while adding");
             }
@@ -109,7 +109,7 @@ public class DrinkListFragment extends Fragment {
         Drink drink;
         while(res.moveToNext()) {
             drink = new Drink(res.getString(0),res.getString(1),res.getString(2),res.getString(3),
-                    res.getString(4));
+                    res.getString(4), res.getString(5));
             drinks_adapter.add(drink);
         }
 
@@ -161,6 +161,8 @@ public class DrinkListFragment extends Fragment {
                 final String id = rez.getString(0);
                 ((TextView) v.findViewById(R.id.sub_title)).setText(rez.getString(1));
                 ((TextView) v.findViewById(R.id.sub_bulk)).setText(rez.getString(3) + "l");
+                ((TextView) v.findViewById(R.id.sub_price_txtv)).setText(rez.getString(5) + "din");
+
                 final TextView sub_quantity = v.findViewById(R.id.sub_quantity);
 
                 ((ImageButton) v.findViewById(R.id.sub_add_but)).setOnClickListener(new View.OnClickListener() {

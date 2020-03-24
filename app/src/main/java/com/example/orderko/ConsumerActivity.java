@@ -32,7 +32,6 @@ import java.util.List;
 public class ConsumerActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private BottomNavigationView bottomNavigationView;
-    private ImageView avatar_imvw;
     private Drink drink;
     private List<Drink> drinks = new ArrayList<>();
     private String club_id;
@@ -47,7 +46,6 @@ public class ConsumerActivity extends AppCompatActivity {
         user = User.getInstance();
         userDb = new UserDatabaseHelper(ConsumerActivity.this);
 
-        avatar_imvw = findViewById(R.id.avatar_imvw);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         username_txtv = findViewById(R.id.consumer_username_txvw);
 
@@ -83,8 +81,9 @@ public class ConsumerActivity extends AppCompatActivity {
                                                 String name = document.getData().get("Name").toString();
                                                 String category = document.getData().get("Category").toString();
                                                 String bulk = document.getData().get("Bulk").toString();
+                                                String price = document.getData().get("Price").toString();
                                                 //Log.w("firestoretest", "Naziv pica: " + name + ", Kategorija pica: " + category + ", Kolicina pica: " + bulk);
-                                                drink = new Drink("0",name,category,bulk,"0");
+                                                drink = new Drink("0",name,category,bulk,"0", price);
                                                 drinks.add(drink);
 
                                             }
@@ -101,10 +100,6 @@ public class ConsumerActivity extends AppCompatActivity {
             String table_number = cur.getString(3);
                 user.setTable(table_number);
         }
-
-
-
-        avatar_imvw.setImageResource(R.drawable.avatar);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner, new TableFragment())
                 .commit();

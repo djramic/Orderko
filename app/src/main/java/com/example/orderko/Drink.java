@@ -8,13 +8,23 @@ public class Drink implements Serializable {
     private String category;
     private String bulk;
     private String quantity;
+    private String price;
 
-    public Drink(String id, String name, String category, String bulk, String quantity) {
+    public Drink(String id, String name, String category, String bulk, String quantity, String price) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.bulk = bulk;
         this.quantity = quantity;
+        this.price = price;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public void setId(String id) {

@@ -27,6 +27,18 @@
         android:layout_toRightOf="@+id/sub_title"
         android:text="1" />
 
+    <TextView
+        android:id="@+id/sub_price_txtv"
+        android:textColor="@color/green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/sub_add_but"
+        android:text="test"
+        android:layout_marginRight="10dp"
+        android:gravity="center"/>
+
     <ImageButton
         android:id="@+id/sub_add_but"
         android:layout_centerVertical="true"

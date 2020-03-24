@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_3 = "CATEGORY";
     public static final String COL_4 = "BULK";
     public static final String COL_5 = "QUANTITY";
+    public static final String COL_6 = "PRICE";
 
 
     public DatabaseHelper(@Nullable Context context) {
@@ -27,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("create table " + TABLE_NAME + "(ID INTEGER PRIMARY KEY AUTOINCREMENT,DRINK TEXT,CATEGORY TEXT," +
-                "BULK INTEGER,QUANTITY TEXT)");
+                "BULK INTEGER,QUANTITY TEXT,PRICE TEXT)");
     }
 
     @Override
@@ -36,13 +37,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String drink, String category, String bulk, String quantity){
+    public boolean insertData(String drink, String category, String bulk, String quantity, String price){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2, drink);
         contentValues.put(COL_3, category);
         contentValues.put(COL_4, bulk);
         contentValues.put(COL_5, quantity);
+        contentValues.put(COL_6, price);
+
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
              return false;

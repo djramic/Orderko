@@ -23,6 +23,7 @@
     <NumberPicker
         android:id="@+id/numberPicker"
         android:layout_width="150dp"
+        android:theme="@style/AppTheme.Picker"
         android:outlineSpotShadowColor="@color/white"
         android:layout_height="150dp"
         android:layout_marginStart="20dp"
