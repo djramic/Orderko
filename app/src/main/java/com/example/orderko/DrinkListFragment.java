@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,20 +77,25 @@ public class DrinkListFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                StringBuffer buffer = new StringBuffer();
-                Cursor res = myDb.getOrder();
-                while (res.moveToNext()) {
+                if(user.getTable() != null){
+                    StringBuffer buffer = new StringBuffer();
+                    Cursor res = myDb.getOrder();
+                    while (res.moveToNext()) {
                     /*buffer.append("ID :" + res.getString(0) + "\n");
                     buffer.append("Drink :" + res.getString(1) + "\n");
                     buffer.append("Category :" + res.getString(2) + "\n");
                     buffer.append("Bulk :" + res.getString(3) + "\n");
                     buffer.append("Quantity :" + res.getString(4) + "\n\n");*/
-                    String id = myRef.push().getKey();
-                    Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),user.getTable());
-                    myRef.child(id).setValue(order);
+                        String id = myRef.push().getKey();
+                        Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),user.getTable());
+                        myRef.child(id).setValue(order);
+                    }
+                    Log.d("databasetest" , buffer.toString());
+                    getFragmentManager().beginTransaction().detach(DrinkListFragment.this).attach(DrinkListFragment.this).commit();
+
+                }else {
+                    Toast.makeText(getActivity(),"Niste izabrali nijedan sto", Toast.LENGTH_LONG).show();
                 }
-                Log.d("databasetest" , buffer.toString());
-                getFragmentManager().beginTransaction().detach(DrinkListFragment.this).attach(DrinkListFragment.this).commit();
 
             }
         });

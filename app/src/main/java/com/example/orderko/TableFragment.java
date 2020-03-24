@@ -99,8 +99,15 @@ public class TableFragment extends Fragment {
                         table_search.add(table_numb);
                     }
                     if (table_search.contains(String.valueOf(table_nubmer))) {
-                        taken_visibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),"Pogrešna šifra", Toast.LENGTH_LONG).show();
+                        if(user.getTable() != null) {
+                            if (!user.getTable().equals(String.valueOf(table_nubmer))) {   // KAD BEZ STOLA UDJEM U ZAUZET CRASH
+                                taken_visibility(View.VISIBLE);
+                                Toast.makeText(getActivity(), "Sto je već zauzet", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            taken_visibility(View.VISIBLE);
+                            Toast.makeText(getActivity(), "Sto je već zauzet", Toast.LENGTH_LONG).show();
+                        }
 
                     }
                     else {
@@ -127,11 +134,12 @@ public class TableFragment extends Fragment {
                     public void onClick(View v) {
                         int table_n = numberPicker.getValue();
                         String table_num = String.valueOf(table_n);
+                        String password = password_edtx.getText().toString();
 
                         for(Table t : tables){
                             if(t.getTable_number().equals(table_num)) {
                                 //Log.d("tables","Nasao sto "+ table_num +  " i " + t.getTable_number());
-                                if(t.getPassword().equals(password_edtx.getText().toString())){
+                                if(t.getPassword().equals(password)){
                                     if(user.getTable() != null) {
                                         leave_table(getUsersNumber(user.getTable()));
                                     }
@@ -185,6 +193,7 @@ public class TableFragment extends Fragment {
         if(users_numb.equals("0") || users_numb.equals("1")) { // TO - DO
             tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(user.getTable());
             tableDelRef.removeValue();
+            table_num_txvw.setText("Nemaš sto");
             user.setTable(null);
             userDb.clearTable();
         }else {
