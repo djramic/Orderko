@@ -7,15 +7,25 @@ public class Order {
     private String category;
     private String bulk;
     private String table;
+    private String price;
 
 
-    public Order(String id, String name,String category, String quantity, String bulk, String table) {
+    public Order(String id, String name,String category, String quantity, String bulk, String table, String price) {
         this.name = name;
         this.quantity = quantity;
         this.bulk = bulk;
         this.table = table;
         this.id = id;
         this.category = category;
+        this.price = price;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
     public String getCategory() {

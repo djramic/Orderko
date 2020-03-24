@@ -77,15 +77,16 @@ public class DrinkListFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if(user.getTable() != null){
                     StringBuffer buffer = new StringBuffer();
                     Cursor res = myDb.getOrder();
                     while (res.moveToNext()) {
-                    /*buffer.append("ID :" + res.getString(0) + "\n");
+                    buffer.append("ID :" + res.getString(0) + "\n");
                     buffer.append("Drink :" + res.getString(1) + "\n");
                     buffer.append("Category :" + res.getString(2) + "\n");
                     buffer.append("Bulk :" + res.getString(3) + "\n");
-                    buffer.append("Quantity :" + res.getString(4) + "\n\n");*/
+                    buffer.append("Quantity :" + res.getString(4) + "\n\n");
                         String id = myRef.push().getKey();
                         Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),user.getTable());
                         myRef.child(id).setValue(order);
@@ -95,7 +96,10 @@ public class DrinkListFragment extends Fragment {
 
                 }else {
                     Toast.makeText(getActivity(),"Niste izabrali nijedan sto", Toast.LENGTH_LONG).show();
-                }
+                }*/
+
+                OrderDialogClass cdd=new OrderDialogClass(getActivity());
+                cdd.show();
 
             }
         });
