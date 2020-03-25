@@ -63,7 +63,7 @@ public class TableFragment extends Fragment {
        numberPicker.setMaxValue(10);
 
        database = FirebaseDatabase.getInstance();
-       tableRef = database.getReference("/bello/tables");
+       tableRef = database.getReference(user.getClub() + "/tables");
 
         tableRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -185,7 +185,7 @@ public class TableFragment extends Fragment {
         table_num_txvw.setTextSize(60);
         table_num_txvw.setText(table_number);
         user.setTable(table_number);
-        userDb.insertData("0","0",table_number,"0");
+        userDb.insertData("0","0",table_number,"0",user.getClub());
         user.setUserBill("0");
         user.setUserLastBill("0");
         Activity a = getActivity();
@@ -205,7 +205,7 @@ public class TableFragment extends Fragment {
         act.updateBill();
         int usrs_numb = Integer.parseInt(users_numb);
         if(users_numb.equals("0") || users_numb.equals("1")) { // TO - DO
-            tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(user.getTable());
+            tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(user.getTable());
             tableDelRef.removeValue();
             table_num_txvw.setTextSize(40);
             table_num_txvw.setText("Nemaš sto");
@@ -214,7 +214,7 @@ public class TableFragment extends Fragment {
         }else {
             Log.d("leve", "napustam stoo" + user.getTable());
             String table = user.getTable();
-            tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(table);
+            tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(table);
             tableDelRef.removeValue();
             Table t = new Table(user.getTable(), user.getTable(), user.getPassword(),String.valueOf(usrs_numb -1));
             tableRef.child(user.getTable()).setValue(t);

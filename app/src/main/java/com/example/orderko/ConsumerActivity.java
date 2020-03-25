@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +37,7 @@ public class ConsumerActivity extends AppCompatActivity {
     private UserDatabaseHelper userDb;
     private TextView user_bill_txtv;
     private TextView user_last_bill;
+    private Button leave_club_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class ConsumerActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         user_bill_txtv = findViewById(R.id.user_all_bill);
         user_last_bill = findViewById(R.id.user_last_bill_txvw);
+        leave_club_button = findViewById(R.id.leave_table_but);
 
 
         db.collection("Clubs")
@@ -53,8 +58,9 @@ public class ConsumerActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()) {
-                            String Club_name = "Bello";
+                            String Club_name = user.getClub();
                             for(QueryDocumentSnapshot document : task.getResult() ) {
+                                Log.w("firestoretest", "poredim " + user.getClub() + " sa " + document.get("Name"));
                                 if(Club_name.equals(document.get("Name"))) {
                                     club_id = document.getId();
                                     Log.w("firestoretest", "Nasao sam lokal.");
@@ -145,12 +151,30 @@ public class ConsumerActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        leave_club_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(user.getTable() != null) {
+                    leave_table();
+                }
+                user.setUserBill("0");
+                user.setUserLastBill("0");
+                user.setTable(null);
+                user.setClub(null);
+
+                userDb.insertData("0","0",null,"0",null);
+                startActivity(new Intent(ConsumerActivity.this,MainActivity.class));
+            }
+        });
+
+
     }
 
     private void leave_table(){
         Log.d("leave","napustam stoo" + user.getTable() );
         String table = user.getTable();
-        DatabaseReference tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(table);
+        DatabaseReference tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(table);
         tableDelRef.removeValue();
 
     }

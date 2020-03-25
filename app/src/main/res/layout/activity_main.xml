@@ -4,59 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@color/colorBackground">
 
-    <EditText
-        android:id="@+id/email_edtx"
-        android:layout_width="wrap_content"
+    <AutoCompleteTextView
+        android:textColorHint="@color/white"
+        android:id="@+id/autoCompleteTextView"
+        android:textColor="@color/white"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:ems="10"
-        android:hint="e-mail"
-        android:inputType="textEmailAddress"
+        android:layout_marginTop="50dp"
+        android:hint="Krenite da kucate naziv lokala"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/password_edtx"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_edtx" />
-
     <Button
-        android:id="@+id/login_but"
+        android:id="@+id/main_activity_choose_but"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Uloguj se"
+        android:layout_marginTop="15dp"
+        android:text="Izaberi lokal"
+        android:textColor="@color/pink"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_edtx" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="ili"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_but" />
-
-    <Button
-        android:id="@+id/sing_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Napravi nalog"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

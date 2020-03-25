@@ -48,10 +48,11 @@ public class OrderDialogClass extends Dialog{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.order_confirm_dialog);
 
+        user = User.getInstance();
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, orders_list);
         myDb = new DatabaseHelper(getContext());
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference( "bello/orders");
+        myRef = database.getReference( user.getClub() + "/orders");
         userDb = new UserDatabaseHelper(getContext());
 
         confirm = (Button) findViewById(R.id.dialog_confirm_but);
@@ -59,9 +60,6 @@ public class OrderDialogClass extends Dialog{
         sum_txtv = (TextView) findViewById(R.id.dialog_sum_txtv);
         cancel = findViewById(R.id.dialog_cancel_but);
 
-
-
-        user = User.getInstance();
         orders_list.clear();
         int sum = 0;
         Cursor res = myDb.getOrder();

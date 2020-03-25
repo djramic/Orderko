@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="250dp"
     android:layout_height="400dp"
-    android:background="@color/cardViewBackground">
+    android:background="@color/cardViewBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="6dp">
 
 
     <ListView

@@ -16,6 +16,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_3 = "USER_BILL";
     public static final String COL_4 = "TABLE_NUMB";
     public static final String COL_5 = "USER_LAST_BILL";
+    public static final String COL_6 = "CLUB";
 
     public UserDatabaseHelper(@Nullable Context context) {
         super(context,DATABASE_NAME,null, 1);
@@ -34,7 +35,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String user_id, String user_bill, String table, String last_bill){
+    public boolean insertData(String user_id, String user_bill, String table, String last_bill, String club){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("delete from "+ TABLE_NAME);
         ContentValues contentValues = new ContentValues();
@@ -42,6 +43,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_3, user_bill);
         contentValues.put(COL_4, table);
         contentValues.put(COL_5, last_bill);
+        contentValues.put(COL_6, club);
         long result = db.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
             return false;

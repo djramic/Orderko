@@ -60,18 +60,6 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Broj stola: "
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/user_bill_text_txvw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -95,12 +83,14 @@
 
         <TextView
             android:id="@+id/textView"
-            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:text="Ukupno za stolom"
-            app:layout_constraintEnd_toStartOf="@+id/textView4"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -108,11 +98,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:textColor="@color/pink"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/pink"
+            app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -125,12 +113,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/user_all_bill" />
 
-        <TextView
+        <Button
+            android:id="@+id/leave_table_but"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="TextView"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@android:color/transparent"
+            android:text="napusti lokal"
+            android:textColor="@color/pink"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

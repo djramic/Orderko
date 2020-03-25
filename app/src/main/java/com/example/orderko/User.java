@@ -5,12 +5,21 @@ public class User {
     private String password;
     private String userBill;
     private String userLastBill;
+    private String club;
     private static User user;
 
     public static  User getInstance() {
         if(user == null)
             user = new User();
         return user;
+    }
+
+    public String getClub() {
+        return club;
+    }
+
+    public void setClub(String club) {
+        this.club = club;
     }
 
     public User() {
