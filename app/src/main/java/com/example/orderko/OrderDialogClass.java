@@ -35,6 +35,7 @@ public class OrderDialogClass extends Dialog{
     private TextView sum_txtv;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private UserDatabaseHelper userDb;
 
     public OrderDialogClass(Activity a ) {
         super(a);
@@ -51,6 +52,7 @@ public class OrderDialogClass extends Dialog{
         myDb = new DatabaseHelper(getContext());
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference( "bello/orders");
+        userDb = new UserDatabaseHelper(getContext());
 
         confirm = (Button) findViewById(R.id.dialog_confirm_but);
         list_view = (ListView) findViewById(R.id.dialog_order_list);
@@ -80,14 +82,41 @@ public class OrderDialogClass extends Dialog{
             @Override
             public void onClick(View v) {
                 Cursor res = myDb.getOrder();
+                int sum = 0;
                 while (res.moveToNext()) {
                     String id = myRef.push().getKey();
                     Order order = new Order(id, res.getString(1), res.getString(2), res.getString(4), res.getString(3), user.getTable(), res.getString(5));
                     myRef.child(id).setValue(order);
+                    int quantitiy = Integer.parseInt(order.getQuantity());
+                    int price = Integer.parseInt(order.getPrice());
+                    sum = sum + (quantitiy * price);
 
                 }
+
+                user.setUserLastBill(String.valueOf(sum));
+                userDb.updateLastBill(String.valueOf(sum));
+                Cursor userRes = userDb.getData();
+                String user_bill = "4";
+                while(userRes.moveToNext()) {
+                    user_bill= userRes.getString(2);
+                    Log.d("userbill","Ukupni racun korisnika do sada" + user_bill);
+                }
+                int bill = Integer.parseInt(user_bill);
+                if(userDb.updateBill(String.valueOf(sum + bill))){
+                    Log.d("userbill","Uspesno sam stavio u db" + String.valueOf(sum + bill));
+                }
+                user.setUserBill(String.valueOf(sum + bill));
+
+
+                Cursor read = userDb.getData();
+                StringBuffer buffer = new StringBuffer();
+                while (read.moveToNext()) {
+                    Log.d("userdb", read.getString(0) +" "+ read.getString(1) +" "+ read.getString(2)+" "+ read.getString(3));
+                }
+
                 ConsumerActivity act = (ConsumerActivity)c;
                 act.refreshFragment();
+
 
                 Toast.makeText(getContext(),"Porudzbina je poslata", Toast.LENGTH_LONG).show();
 

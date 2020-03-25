@@ -6,21 +6,16 @@ import androidx.fragment.app.Fragment;
 
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,8 +31,9 @@ public class ConsumerActivity extends AppCompatActivity {
     private List<Drink> drinks = new ArrayList<>();
     private String club_id;
     private User user;
-    private TextView username_txtv;
     private UserDatabaseHelper userDb;
+    private TextView user_bill_txtv;
+    private TextView user_last_bill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +43,8 @@ public class ConsumerActivity extends AppCompatActivity {
         userDb = new UserDatabaseHelper(ConsumerActivity.this);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        username_txtv = findViewById(R.id.consumer_username_txvw);
+        user_bill_txtv = findViewById(R.id.user_all_bill);
+        user_last_bill = findViewById(R.id.user_last_bill_txvw);
 
 
         db.collection("Clubs")
@@ -99,6 +96,22 @@ public class ConsumerActivity extends AppCompatActivity {
         while(cur.moveToNext()) {
             String table_number = cur.getString(3);
                 user.setTable(table_number);
+                user.setUserBill(cur.getString(2));
+                user.setUserLastBill(cur.getString(4));
+        }
+
+        if(user.getUserBill() != null) {
+            user_bill_txtv.setText(user.getUserBill());
+        }
+        else {
+            user_bill_txtv.setText("0");
+        }
+
+        if(user.getUserLastBill() != null) {
+            user_last_bill.setText(user.getUserLastBill());
+        }
+        else {
+            user_last_bill.setText("0");
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner, new TableFragment())
@@ -143,6 +156,8 @@ public class ConsumerActivity extends AppCompatActivity {
     }
 
     public void refreshFragment(){
+        Cursor cur = userDb.getData();
+        updateBill();
         Fragment selectedFragment = null;
         selectedFragment = new DrinkListFragment();
         Bundle args = new Bundle();
@@ -151,6 +166,11 @@ public class ConsumerActivity extends AppCompatActivity {
         selectedFragment.setArguments(args);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,selectedFragment)
                 .commit();
+    }
+
+    public void updateBill() {
+        user_bill_txtv.setText(user.getUserBill() + "din");
+        user_last_bill.setText(user.getUserLastBill() + "din");
     }
 
 }

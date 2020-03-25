@@ -1,5 +1,6 @@
 package com.example.orderko;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -184,13 +185,24 @@ public class TableFragment extends Fragment {
         table_num_txvw.setTextSize(60);
         table_num_txvw.setText(table_number);
         user.setTable(table_number);
-        userDb.insertData("0","mAuth.getCurrentUser().getEmail()",table_number);
+        userDb.insertData("0","0",table_number,"0");
+        user.setUserBill("0");
+        user.setUserLastBill("0");
+        Activity a = getActivity();
+        ConsumerActivity act = new ConsumerActivity();
+        act = (ConsumerActivity)a;
+        act.updateBill();
         Toast.makeText(getContext(),"Sifra za pristup stolu: " + String.valueOf(random),Toast.LENGTH_LONG).show();
-        //tableRef.child(id).child("users").child(mAuth.getCurrentUser().getUid()).setValue(tableUser);
     }
 
     private void leave_table(String users_numb) {
         Log.d("tables", "Vratio sam korisnika :" + users_numb);
+        user.setUserBill("0");
+        user.setUserLastBill("0");
+        Activity a = getActivity();
+        ConsumerActivity act = new ConsumerActivity();
+        act = (ConsumerActivity)a;
+        act.updateBill();
         int usrs_numb = Integer.parseInt(users_numb);
         if(users_numb.equals("0") || users_numb.equals("1")) { // TO - DO
             tableDelRef = FirebaseDatabase.getInstance().getReference().child("bello").child("tables").child(user.getTable());

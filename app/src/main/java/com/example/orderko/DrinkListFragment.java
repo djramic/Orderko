@@ -78,7 +78,7 @@ public class DrinkListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 /*
-                if(user.getTable() != null){
+
                     StringBuffer buffer = new StringBuffer();
                     Cursor res = myDb.getOrder();
                     while (res.moveToNext()) {
@@ -97,9 +97,12 @@ public class DrinkListFragment extends Fragment {
                 }else {
                     Toast.makeText(getActivity(),"Niste izabrali nijedan sto", Toast.LENGTH_LONG).show();
                 }*/
-
-                OrderDialogClass cdd=new OrderDialogClass(getActivity());
-                cdd.show();
+                if(user.getTable() != null) {
+                    OrderDialogClass cdd = new OrderDialogClass(getActivity());
+                    cdd.show();
+                }else{
+                    Toast.makeText(getContext(),"Moraš prvo izabrati sto", Toast.LENGTH_LONG).show();
+                }
 
             }
         });

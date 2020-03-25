@@ -3,6 +3,8 @@ package com.example.orderko;
 public class User {
     private String table;
     private String password;
+    private String userBill;
+    private String userLastBill;
     private static User user;
 
     public static  User getInstance() {
@@ -12,6 +14,22 @@ public class User {
     }
 
     public User() {
+    }
+
+    public String getUserLastBill() {
+        return userLastBill;
+    }
+
+    public void setUserLastBill(String userLastBill) {
+        this.userLastBill = userLastBill;
+    }
+
+    public String getUserBill() {
+        return userBill;
+    }
+
+    public void setUserBill(String userBill) {
+        this.userBill = userBill;
     }
 
     public String getPassword() {
