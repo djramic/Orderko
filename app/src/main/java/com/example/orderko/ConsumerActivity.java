@@ -141,4 +141,16 @@ public class ConsumerActivity extends AppCompatActivity {
         tableDelRef.removeValue();
 
     }
+
+    public void refreshFragment(){
+        Fragment selectedFragment = null;
+        selectedFragment = new DrinkListFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("DrinkList", (Serializable)drinks);
+        args.putSerializable("Club", "bello");
+        selectedFragment.setArguments(args);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,selectedFragment)
+                .commit();
+    }
+
 }
