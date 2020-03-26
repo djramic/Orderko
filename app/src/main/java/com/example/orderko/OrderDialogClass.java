@@ -94,9 +94,8 @@ public class OrderDialogClass extends Dialog{
                     sum = sum + (quantitiy * price);
 
                 }
+                int user_bi = Integer.parseInt(user.getUserBill());
 
-                user.setUserLastBill(String.valueOf(sum));
-                userDb.updateLastBill(String.valueOf(sum));
                 Cursor userRes = userDb.getData();
                 String user_bill = "0";
                 while(userRes.moveToNext()) {
@@ -108,6 +107,7 @@ public class OrderDialogClass extends Dialog{
                     Log.d("tablebill","Uspesno sam stavio u db" + String.valueOf(sum + bill));
                 }
                 user.setUserBill(String.valueOf(bill + sum));
+                userDb.updateLastBill(String.valueOf(bill + sum));
 
                 int table_bill = 0;
                 if(user.getTableBill() != null) {

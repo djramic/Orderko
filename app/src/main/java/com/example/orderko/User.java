@@ -7,12 +7,21 @@ public class User {
     private String userLastBill;
     private String club;
     private String tableBill;
+    private String usersNum;
     private static User user;
 
     public static  User getInstance() {
         if(user == null)
             user = new User();
         return user;
+    }
+
+    public String getUsersNum() {
+        return usersNum;
+    }
+
+    public void setUsersNum(String usersNum) {
+        this.usersNum = usersNum;
     }
 
     public String getTableBill() {

@@ -79,6 +79,7 @@ public class TableFragment extends Fragment {
                      tables.add(t);
                 }
                 user.setTableBill(getTableBill(user.getTable()));
+                user.setUsersNum(getUsersNumber(user.getTable()));
                 update();
             }
 
@@ -121,7 +122,7 @@ public class TableFragment extends Fragment {
                     }
                     else {
                         if(user.getTable() != null) {
-                            leave_table(getUsersNumber(user.getTable()));
+                            leave_table();
                         }
                         taken_visibility(View.INVISIBLE);
                         users_numbs = getUsersNumber(String.valueOf(table_nubmer));
@@ -131,7 +132,7 @@ public class TableFragment extends Fragment {
 
                 }else {
                     if(user.getTable() != null) {
-                        leave_table(getUsersNumber(user.getTable()));
+                        leave_table();
                     }
                     taken_visibility(View.INVISIBLE);
                     users_numbs = getUsersNumber(String.valueOf(table_nubmer));
@@ -150,7 +151,7 @@ public class TableFragment extends Fragment {
                                 //Log.d("tables","Nasao sto "+ table_num +  " i " + t.getTable_number());
                                 if(t.getPassword().equals(password)){
                                     if(user.getTable() != null) {
-                                        leave_table(getUsersNumber(user.getTable()));
+                                        leave_table();
                                     }
                                     //Log.d("tables","Nasao sto "+ table_num +  " i " + t.getTable_number());
                                     String users_numbs = getUsersNumber(String.valueOf(String.valueOf(table_num)));
@@ -174,7 +175,7 @@ public class TableFragment extends Fragment {
             public void onClick(View v) {
                 taken_visibility(View.INVISIBLE);
                 if(user.getTable() != null) {
-                    leave_table(getUsersNumber(user.getTable()));
+                    leave_table();
                 }
             }
         });
@@ -202,13 +203,13 @@ public class TableFragment extends Fragment {
         Toast.makeText(getContext(),"Sifra za pristup stolu: " + String.valueOf(random),Toast.LENGTH_LONG).show();
     }
 
-    private void leave_table(String users_numb) {
-        Log.d("tables", "Vratio sam korisnika :" + users_numb);
+    private void leave_table() {
+        Log.d("tables", "Vratio sam korisnika :" + user.getUsersNum());
         user.setUserBill("0");
         user.setUserLastBill("0");
         ((ConsumerActivity) getActivity()).updateBill();
-        int usrs_numb = Integer.parseInt(users_numb);
-        if(users_numb.equals("0") || users_numb.equals("1")) { // TO - DO
+        int usrs_numb = Integer.parseInt(user.getUsersNum());
+        if(user.getUsersNum().equals("0") || user.getUsersNum().equals("1")) { // TO - DO
             tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(user.getTable());
             tableDelRef.removeValue();
             table_num_txvw.setTextSize(40);

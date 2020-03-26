@@ -3,6 +3,7 @@ package com.example.orderko;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 
 import android.content.Intent;
@@ -43,6 +44,9 @@ public class ConsumerActivity extends AppCompatActivity {
     private TextView table_bill_txtv;
     private FirebaseDatabase database;
     private DatabaseReference tableRef;
+    private TableFragment table_fragment;
+    private DrinkListFragment drinkListFragment;
+    private BillFragment billFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,11 @@ public class ConsumerActivity extends AppCompatActivity {
         user = User.getInstance();
         userDb = new UserDatabaseHelper(ConsumerActivity.this);
         database = FirebaseDatabase.getInstance();
+        tableRef = database.getReference(user.getClub() + "/tables");
+
+        table_fragment = new TableFragment();
+        drinkListFragment = new DrinkListFragment();
+        billFragment = new BillFragment();
 
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -137,17 +146,17 @@ public class ConsumerActivity extends AppCompatActivity {
 
                         switch (item.getItemId()){
                             case R.id.nav_table:
-                                selectedFragment = new TableFragment();
+                                selectedFragment = table_fragment;
                                 break;
                             case R.id.nav_drink_list:
-                                selectedFragment = new DrinkListFragment();
+                                selectedFragment = drinkListFragment;
                                 Bundle args = new Bundle();
                                 args.putSerializable("DrinkList", (Serializable)drinks);
                                 args.putSerializable("Club", "bello");
                                 selectedFragment.setArguments(args);
                                 break;
                             case R.id.nav_bill:
-                                selectedFragment = new BillFragment();
+                                selectedFragment = billFragment;
                                 break;
 
                         }
@@ -178,12 +187,27 @@ public class ConsumerActivity extends AppCompatActivity {
 
     }
 
-    private void leave_table(){
-        Log.d("leave","napustam stoo" + user.getTable() );
-        String table = user.getTable();
-        DatabaseReference tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(table);
-        tableDelRef.removeValue();
-
+    private void leave_table() {
+        user.setUserBill("0");
+        user.setUserLastBill("0");
+        updateBill();
+        int usrs_numb = Integer.parseInt(user.getUsersNum());
+        Log.d("tables", "Poredim sa :" + user.getUsersNum());
+        if(user.getUsersNum().equals("0") || user.getUsersNum().equals("1")) { // TO - DO
+            DatabaseReference tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(user.getTable());
+            tableDelRef.removeValue();
+            user.setTable(null);
+            userDb.clearTable();
+        }else {
+            String table = user.getTable();
+            DatabaseReference tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(table);
+            tableDelRef.removeValue();
+            Table t = new Table(user.getTable(), user.getTable(), user.getPassword(),String.valueOf(usrs_numb -1),user.getTableBill());
+            tableRef.child(user.getTable()).setValue(t);
+            user.setTable(null);
+            userDb.clearTable();
+            Log.d("tables", "usao sam u leave_table,  user ima vrednost:" + user.getTable());
+        }
     }
 
     public void refreshFragment(){
@@ -209,5 +233,9 @@ public class ConsumerActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        leave_table();
+    }
 }
