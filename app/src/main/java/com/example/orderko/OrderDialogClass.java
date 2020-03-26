@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OrderDialogClass extends Dialog{
 
@@ -35,6 +37,7 @@ public class OrderDialogClass extends Dialog{
     private TextView sum_txtv;
     private FirebaseDatabase database;
     private DatabaseReference myRef;
+    private DatabaseReference tableRef;
     private UserDatabaseHelper userDb;
 
     public OrderDialogClass(Activity a ) {
@@ -53,6 +56,7 @@ public class OrderDialogClass extends Dialog{
         myDb = new DatabaseHelper(getContext());
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference( user.getClub() + "/orders");
+        tableRef = database.getReference( user.getClub() + "/tables");
         userDb = new UserDatabaseHelper(getContext());
 
         confirm = (Button) findViewById(R.id.dialog_confirm_but);
@@ -94,16 +98,26 @@ public class OrderDialogClass extends Dialog{
                 user.setUserLastBill(String.valueOf(sum));
                 userDb.updateLastBill(String.valueOf(sum));
                 Cursor userRes = userDb.getData();
-                String user_bill = "4";
+                String user_bill = "0";
                 while(userRes.moveToNext()) {
                     user_bill= userRes.getString(2);
-                    Log.d("userbill","Ukupni racun korisnika do sada" + user_bill);
+                    Log.d("tablebill","Ukupni racun korisnika do sada" + user_bill);
                 }
                 int bill = Integer.parseInt(user_bill);
                 if(userDb.updateBill(String.valueOf(sum + bill))){
-                    Log.d("userbill","Uspesno sam stavio u db" + String.valueOf(sum + bill));
+                    Log.d("tablebill","Uspesno sam stavio u db" + String.valueOf(sum + bill));
                 }
-                user.setUserBill(String.valueOf(sum + bill));
+                user.setUserBill(String.valueOf(bill + sum));
+
+                int table_bill = 0;
+                if(user.getTableBill() != null) {
+                    table_bill = Integer.parseInt(user.getTableBill());
+                }
+                Log.d("tablebill","tablebill je" + user.getTableBill());
+                user.setTableBill(String.valueOf( table_bill + sum));
+
+                tableRef.child(user.getTable()).child("table_bill").setValue(user.getTableBill());
+
 
 
                 Cursor read = userDb.getData();

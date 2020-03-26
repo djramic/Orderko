@@ -8,7 +8,15 @@ public class Table {
     private String table_number;
     private String password;
     private String users_num;
+    private String table_bill;
 
+    public String getTable_bill() {
+        return table_bill;
+    }
+
+    public void setTable_bill(String table_bill) {
+        this.table_bill = table_bill;
+    }
 
     public String getId() {
         return id;
@@ -42,11 +50,12 @@ public class Table {
         this.users_num = users_num;
     }
 
-    public Table(String id, String table_number, String password, String users_num) {
+    public Table(String id, String table_number, String password, String users_num, String table_bill) {
         this.id = id;
         this.table_number = table_number;
         this.password = password;
         this.users_num = users_num;
+        this.table_bill = table_bill;
     }
 
     public Table() {

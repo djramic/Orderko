@@ -17,8 +17,11 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,8 +39,10 @@ public class ConsumerActivity extends AppCompatActivity {
     private User user;
     private UserDatabaseHelper userDb;
     private TextView user_bill_txtv;
-    private TextView user_last_bill;
     private Button leave_club_button;
+    private TextView table_bill_txtv;
+    private FirebaseDatabase database;
+    private DatabaseReference tableRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +50,13 @@ public class ConsumerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_consumer);
         user = User.getInstance();
         userDb = new UserDatabaseHelper(ConsumerActivity.this);
+        database = FirebaseDatabase.getInstance();
+
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         user_bill_txtv = findViewById(R.id.user_all_bill);
-        user_last_bill = findViewById(R.id.user_last_bill_txvw);
         leave_club_button = findViewById(R.id.leave_table_but);
+        table_bill_txtv = findViewById(R.id.table_bill);
 
 
         db.collection("Clubs")
@@ -113,12 +120,12 @@ public class ConsumerActivity extends AppCompatActivity {
             user_bill_txtv.setText("0");
         }
 
-        if(user.getUserLastBill() != null) {
+        /*if(user.getUserLastBill() != null) {
             user_last_bill.setText(user.getUserLastBill());
         }
         else {
             user_last_bill.setText("0");
-        }
+        }*/
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner, new TableFragment())
                 .commit();
@@ -163,7 +170,7 @@ public class ConsumerActivity extends AppCompatActivity {
                 user.setTable(null);
                 user.setClub(null);
 
-                userDb.insertData("0","0",null,"0",null);
+                userDb.insertData("0","0",null,"0",null, user.getTableBill());
                 startActivity(new Intent(ConsumerActivity.this,MainActivity.class));
             }
         });
@@ -193,8 +200,14 @@ public class ConsumerActivity extends AppCompatActivity {
     }
 
     public void updateBill() {
-        user_bill_txtv.setText(user.getUserBill() + "din");
-        user_last_bill.setText(user.getUserLastBill() + "din");
+        if(user.getUserBill() != null) {
+            user_bill_txtv.setText(user.getUserBill() + "din");
+        }
+        if(user.getTableBill() != null) {
+            table_bill_txtv.setText(user.getTableBill() + "din");
+        }
+
     }
+
 
 }

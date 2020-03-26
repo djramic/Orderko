@@ -6,12 +6,21 @@ public class User {
     private String userBill;
     private String userLastBill;
     private String club;
+    private String tableBill;
     private static User user;
 
     public static  User getInstance() {
         if(user == null)
             user = new User();
         return user;
+    }
+
+    public String getTableBill() {
+        return tableBill;
+    }
+
+    public void setTableBill(String tableBill) {
+        this.tableBill = tableBill;
     }
 
     public String getClub() {

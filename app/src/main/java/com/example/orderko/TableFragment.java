@@ -41,6 +41,8 @@ public class TableFragment extends Fragment {
     private EditText password_edtx;
     private ImageButton confirm_password;
     private ImageButton leave_table_but;
+    private TextView  user_bill_txtv;
+    private TextView table_bill_txtv;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class TableFragment extends Fragment {
        password_edtx = v.findViewById(R.id.tablef_table_password_edtx);
        confirm_password = v.findViewById(R.id.tablef_confiram_pass_imbt);
        leave_table_but = v.findViewById(R.id.tablef_leave_table_but);
+       user_bill_txtv = getActivity().findViewById(R.id.user_all_bill);
+        table_bill_txtv = getActivity().findViewById(R.id.table_bill);
 
 
        numberPicker.setMinValue(0);
@@ -74,6 +78,8 @@ public class TableFragment extends Fragment {
                      Table t = data.getValue(Table.class);
                      tables.add(t);
                 }
+                user.setTableBill(getTableBill(user.getTable()));
+                update();
             }
 
             @Override
@@ -101,6 +107,7 @@ public class TableFragment extends Fragment {
                         table_search.add(table_numb);
                     }
                     if (table_search.contains(String.valueOf(table_nubmer))) {
+
                         if(user.getTable() != null) {
                             if (!user.getTable().equals(String.valueOf(table_nubmer))) {   // KAD BEZ STOLA UDJEM U ZAUZET CRASH
                                 taken_visibility(View.VISIBLE);
@@ -177,21 +184,21 @@ public class TableFragment extends Fragment {
 
     private void take_table(String table_number, String table_users) {
 
+        user.setTableBill(getTableBill(table_number));
         int table_usrs = Integer.parseInt(table_users);
         int random = new Random().nextInt((8999) + 1000);
         user.setPassword(String.valueOf(random));
-        Table table = new Table(table_number, table_number, String.valueOf(random),String.valueOf(table_usrs+1));
+        Table table = new Table(table_number, table_number, String.valueOf(random),String.valueOf(table_usrs+1),user.getTableBill());
         tableRef.child(table_number).setValue(table);
         table_num_txvw.setTextSize(60);
         table_num_txvw.setText(table_number);
         user.setTable(table_number);
-        userDb.insertData("0","0",table_number,"0",user.getClub());
+        userDb.insertData("0","0",table_number,"0",user.getClub(), user.getTableBill());
         user.setUserBill("0");
         user.setUserLastBill("0");
-        Activity a = getActivity();
-        ConsumerActivity act = new ConsumerActivity();
-        act = (ConsumerActivity)a;
-        act.updateBill();
+        Log.d("tablebill","Stavljam u user.tableBill: " + getTableBill(table_number) );
+        user.setTableBill(getTableBill(table_number));
+        ((ConsumerActivity) getActivity()).updateBill();
         Toast.makeText(getContext(),"Sifra za pristup stolu: " + String.valueOf(random),Toast.LENGTH_LONG).show();
     }
 
@@ -199,10 +206,7 @@ public class TableFragment extends Fragment {
         Log.d("tables", "Vratio sam korisnika :" + users_numb);
         user.setUserBill("0");
         user.setUserLastBill("0");
-        Activity a = getActivity();
-        ConsumerActivity act = new ConsumerActivity();
-        act = (ConsumerActivity)a;
-        act.updateBill();
+        ((ConsumerActivity) getActivity()).updateBill();
         int usrs_numb = Integer.parseInt(users_numb);
         if(users_numb.equals("0") || users_numb.equals("1")) { // TO - DO
             tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(user.getTable());
@@ -216,7 +220,7 @@ public class TableFragment extends Fragment {
             String table = user.getTable();
             tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(table);
             tableDelRef.removeValue();
-            Table t = new Table(user.getTable(), user.getTable(), user.getPassword(),String.valueOf(usrs_numb -1));
+            Table t = new Table(user.getTable(), user.getTable(), user.getPassword(),String.valueOf(usrs_numb -1),getTableBill(user.getTable()));
             tableRef.child(user.getTable()).setValue(t);
             user.setTable(null);
             userDb.clearTable();
@@ -243,6 +247,32 @@ public class TableFragment extends Fragment {
 
     }
 
+    private void update(){
+        if(user.getUserBill() != null) {
+            user_bill_txtv.setText(user.getUserBill() + "din");
+        }
+        if(user.getTableBill() != null) {
+            table_bill_txtv.setText(user.getTableBill() + "din");
+        }
+    }
+
+    private String getTableBill(String table_numb) {
+        ArrayList<String> table_search = new ArrayList<>();
+        ArrayList<String> table_bill_list = new ArrayList<>();
+
+        for (Table t : tables) {
+            table_search.add(t.getTable_number());
+            table_bill_list.add(t.getTable_bill());
+        }
+
+        if (table_search.contains(table_numb)) {
+            return table_bill_list.get(table_search.indexOf(table_numb));
+        } else {
+            return "0";
+        }
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -265,6 +295,7 @@ public class TableFragment extends Fragment {
         password_edtx.setVisibility(visible);
         confirm_password.setVisibility(visible);
     }
+
 
 
 }
