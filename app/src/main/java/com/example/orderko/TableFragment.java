@@ -207,7 +207,6 @@ public class TableFragment extends Fragment {
         Log.d("tables", "Vratio sam korisnika :" + user.getUsersNum());
         user.setUserBill("0");
         user.setUserLastBill("0");
-        ((ConsumerActivity) getActivity()).updateBill();
         int usrs_numb = Integer.parseInt(user.getUsersNum());
         if(user.getUsersNum().equals("0") || user.getUsersNum().equals("1")) { // TO - DO
             tableDelRef = FirebaseDatabase.getInstance().getReference().child(user.getClub()).child("tables").child(user.getTable());
@@ -216,6 +215,7 @@ public class TableFragment extends Fragment {
             table_num_txvw.setText("Nemaš sto");
             user.setTable(null);
             userDb.clearTable();
+            ((ConsumerActivity) getActivity()).updateBill();
         }else {
             Log.d("leve", "napustam stoo" + user.getTable());
             String table = user.getTable();
@@ -227,6 +227,7 @@ public class TableFragment extends Fragment {
             userDb.clearTable();
             table_num_txvw.setTextSize(40);
             table_num_txvw.setText("Nemaš sto");
+            ((ConsumerActivity) getActivity()).updateBill();
             Log.d("tables", "usao sam u leave_table,  user ima vrednost:" + user.getTable());
         }
     }

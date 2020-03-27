@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +42,7 @@ public class OrderDialogClass extends Dialog{
     private DatabaseReference myRef;
     private DatabaseReference tableRef;
     private UserDatabaseHelper userDb;
+    private OrdersDatabaseHelper ordersDb;
 
     public OrderDialogClass(Activity a ) {
         super(a);
@@ -54,6 +58,7 @@ public class OrderDialogClass extends Dialog{
         user = User.getInstance();
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, orders_list);
         myDb = new DatabaseHelper(getContext());
+        ordersDb = new OrdersDatabaseHelper(getContext());
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference( user.getClub() + "/orders");
         tableRef = database.getReference( user.getClub() + "/tables");
@@ -129,6 +134,18 @@ public class OrderDialogClass extends Dialog{
                 ConsumerActivity act = (ConsumerActivity)c;
                 act.refreshFragment();
 
+                String time_and_date = getTimeAndDate();
+                res = myDb.getOrder();
+                while(res.moveToNext()) {
+                    boolean added = ordersDb.insertData(res.getString(1), res.getString(2), res.getString(3), res.getString(4)
+                                        ,res.getString(5),user.getTable(),user.getClub(), time_and_date);
+                    if(added){
+                        Log.d("biltest","Stavio u orders db");
+                    }else {
+                        Log.d("biltest","Greska prilikom stavljanja u orders db");
+                    }
+                }
+
 
                 Toast.makeText(getContext(),"Porudzbina je poslata", Toast.LENGTH_LONG).show();
 
@@ -145,6 +162,16 @@ public class OrderDialogClass extends Dialog{
                 dismiss();
             }
         });
+    }
+
+    private String getTimeAndDate() {
+        Date currentTime = Calendar.getInstance().getTime();
+        String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        String time = String.valueOf(currentTime.getDate()) + "." + String.valueOf(currentTime.getMonth() + 1) + "." + year +
+                                     "   " + currentTime.getHours()+ ":" + currentTime.getMinutes() + ":" +  currentTime.getSeconds();
+        Log.d("biltest","Trenutno vreme: " + time);
+
+        return time;
     }
 
 

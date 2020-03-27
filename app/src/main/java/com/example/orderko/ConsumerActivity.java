@@ -47,6 +47,7 @@ public class ConsumerActivity extends AppCompatActivity {
     private TableFragment table_fragment;
     private DrinkListFragment drinkListFragment;
     private BillFragment billFragment;
+    private TextView club_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class ConsumerActivity extends AppCompatActivity {
         user_bill_txtv = findViewById(R.id.user_all_bill);
         leave_club_button = findViewById(R.id.leave_table_but);
         table_bill_txtv = findViewById(R.id.table_bill);
+        club_info = findViewById(R.id.club_info_txtv);
 
 
         db.collection("Clubs")
@@ -231,11 +233,16 @@ public class ConsumerActivity extends AppCompatActivity {
             table_bill_txtv.setText(user.getTableBill() + "din");
         }
 
+        club_info.setText("Club " + user.getClub());
+        if(user.getTable() != null) {
+            club_info.setText("Club " + user.getClub() + " sto broj: " + user.getTable());;
+        }
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        leave_table();
+        Log.d("destorsdfk","usao sam u destory");
     }
 }
