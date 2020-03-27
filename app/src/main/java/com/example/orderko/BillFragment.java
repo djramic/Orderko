@@ -1,11 +1,13 @@
 package com.example.orderko;
 
+import android.animation.IntArrayEvaluator;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class BillFragment extends Fragment {
     private OrdersDatabaseHelper ordersDb;
@@ -21,6 +24,7 @@ public class BillFragment extends Fragment {
     private ArrayList<HistoryCard> h_cards = new ArrayList<>();
     private ListView history_card_list;
     private HistoryListAdapter h_adapter;
+    private Button clear_history_but;
 
 
     @Nullable
@@ -31,6 +35,7 @@ public class BillFragment extends Fragment {
         h_adapter = new HistoryListAdapter(getContext(),h_cards);
 
         history_card_list = v.findViewById(R.id.orders_history_list);
+        clear_history_but = v.findViewById(R.id.bill_clear_history_but);
 
         h_orders.clear();
         h_cards.clear();
@@ -55,24 +60,37 @@ public class BillFragment extends Fragment {
 
         }
 
-
         ArrayList<String> dates = getDates();
+        Collections.reverse(dates);
         for(String date : dates) {
             res = ordersDb.getDataOfDate(date);
             ArrayList<String> card_orders = new ArrayList<>();
             String club="none";
             String time = "none";
+            int sum = 0;
             while(res.moveToNext()) {
-                String order = res.getString(4) + " x " + res.getString(1);
+                int quantity = Integer.parseInt(res.getString(4));
+                int price = Integer.parseInt(res.getString(5));
+                String order = res.getString(4) + " x " + res.getString(1) + " = " + String.valueOf(quantity * price);
                 club = res.getString(7);
                 time = res.getString(8);
                 card_orders.add(order);
+                sum = sum + (quantity * price);
             }
 
-            HistoryCard h_card = new HistoryCard(card_orders,time,club);
+            HistoryCard h_card = new HistoryCard(card_orders,time,club,String.valueOf(sum));
             h_cards.add(h_card);
         }
         history_card_list.setAdapter(h_adapter);
+
+        clear_history_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ordersDb.clearTable();
+                h_cards.clear();
+                history_card_list.setAdapter(h_adapter);
+            }
+        });
 
 
         return v;
