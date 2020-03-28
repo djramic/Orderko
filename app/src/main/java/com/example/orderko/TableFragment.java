@@ -97,75 +97,12 @@ public class TableFragment extends Fragment {
        pick_table_imbt.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-                ArrayList<String> table_search = new ArrayList<>();
-                int table_nubmer = numberPicker.getValue();
-                String users_numbs = "0";
-
-                if(tables.size() > 0) {
-
-                    for (Table t : tables) {
-                        String table_numb = t.getTable_number();
-                        table_search.add(table_numb);
-                    }
-                    if (table_search.contains(String.valueOf(table_nubmer))) {
-
-                        if(user.getTable() != null) {
-                            if (!user.getTable().equals(String.valueOf(table_nubmer))) {   // KAD BEZ STOLA UDJEM U ZAUZET CRASH
-                                taken_visibility(View.VISIBLE);
-                                Toast.makeText(getActivity(), "Sto je već zauzet", Toast.LENGTH_LONG).show();
-                            }
-                        }else{
-                            taken_visibility(View.VISIBLE);
-                            Toast.makeText(getActivity(), "Sto je već zauzet", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                    else {
-                        if(user.getTable() != null) {
-                            leave_table();
-                        }
-                        taken_visibility(View.INVISIBLE);
-                        users_numbs = getUsersNumber(String.valueOf(table_nubmer));
-                        take_table(String.valueOf(table_nubmer),users_numbs);
-                    }
-
-
-                }else {
-                    if(user.getTable() != null) {
-                        leave_table();
-                    }
-                    taken_visibility(View.INVISIBLE);
-                    users_numbs = getUsersNumber(String.valueOf(table_nubmer));
-                    take_table(String.valueOf(table_nubmer),users_numbs);
-                }
-
-                confirm_password.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int table_n = numberPicker.getValue();
-                        String table_num = String.valueOf(table_n);
-                        String password = password_edtx.getText().toString();
-
-                        for(Table t : tables){
-                            if(t.getTable_number().equals(table_num)) {
-                                //Log.d("tables","Nasao sto "+ table_num +  " i " + t.getTable_number());
-                                if(t.getPassword().equals(password)){
-                                    if(user.getTable() != null) {
-                                        leave_table();
-                                    }
-                                    //Log.d("tables","Nasao sto "+ table_num +  " i " + t.getTable_number());
-                                    String users_numbs = getUsersNumber(String.valueOf(String.valueOf(table_num)));
-                                    take_table(String.valueOf(table_num),users_numbs);
-
-                                }
-                                else{
-                                    Toast.makeText(getActivity(),"Pogrešna šifra", Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }
-                    }
-                });
-
+               int table_num = numberPicker.getValue();
+               if(user.getTable() != null) {
+                   leave_table();
+               }
+               user.setUsersNum(getUsersNumber(String.valueOf(table_num)));
+               take_table(String.valueOf(String.valueOf(table_num)),user.getUsersNum());
 
            }
        });
@@ -173,7 +110,6 @@ public class TableFragment extends Fragment {
         leave_table_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                taken_visibility(View.INVISIBLE);
                 if(user.getTable() != null) {
                     leave_table();
                 }
@@ -184,7 +120,7 @@ public class TableFragment extends Fragment {
     }
 
     private void take_table(String table_number, String table_users) {
-
+        Log.d("addtable","Zauzimam sto: " + table_number);
         user.setTableBill(getTableBill(table_number));
         int table_usrs = Integer.parseInt(table_users);
         int random = new Random().nextInt((8999) + 1000);
@@ -292,11 +228,6 @@ public class TableFragment extends Fragment {
 
     }
 
-    private void taken_visibility(int visible){
-        table_taken_txtv.setVisibility(visible);
-        password_edtx.setVisibility(visible);
-        confirm_password.setVisibility(visible);
-    }
 
 
 

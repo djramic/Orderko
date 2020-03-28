@@ -57,12 +57,6 @@ public class ConsumerActivity extends AppCompatActivity{
     private DrinkListFragment drinkListFragment;
     private BillFragment billFragment;
     private TextView club_info;
-    private float[] dist;
-    private LocationListener locationListenerGPS;
-    private LocationManager locationManager;
-    private Location bello;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +67,6 @@ public class ConsumerActivity extends AppCompatActivity{
         database = FirebaseDatabase.getInstance();
         tableRef = database.getReference(user.getClub() + "/tables");
 
-        bello = new Location("");
-        bello.setLatitude(45.25848);
-        bello.setLongitude(19.84736);
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        mLocationListener();
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,
-                20, locationListenerGPS);
 
         table_fragment = new TableFragment();
         drinkListFragment = new DrinkListFragment();
@@ -264,50 +250,5 @@ public class ConsumerActivity extends AppCompatActivity{
 
     }
 
-    private void mLocationListener(){
-        locationListenerGPS = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                checkDistance(location,bello);
-                Log.d("locationtest","Udaljenost od bella je: " + dist[0]);
-                if(dist[0]/50 >1) {
-                    Log.d("locationtest","Napustam sto" + dist[0]);
-
-                    if(user.getTable() != null) {
-                        leave_table();
-                    }
-                    user.setUserBill("0");
-                    user.setUserLastBill("0");
-                    user.setTable(null);
-                    user.setClub(null);
-
-                    userDb.insertData("0","0",null,"0",null, user.getTableBill());
-                    startActivity(new Intent(ConsumerActivity.this,MainActivity.class));
-                }
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-    }
-
-    private void checkDistance(Location location1, Location location2){
-        dist = new float[1];
-        Location.distanceBetween(location1.getLatitude(),location1.getLongitude(),
-                location2.getLatitude(),location2.getLongitude(),dist);
-    }
 
 }
