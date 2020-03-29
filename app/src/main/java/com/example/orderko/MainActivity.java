@@ -1,5 +1,6 @@
 package com.example.orderko;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
@@ -22,6 +23,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.protobuf.DescriptorProtos;
 
 import java.util.ArrayList;
@@ -29,9 +36,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList clubs = new ArrayList();
+    private ArrayList<String> clubs_id = new ArrayList();
     private AutoCompleteTextView autoCompleteTextView;
     private Button choose_but;
     private User user;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         user = User.getInstance();
         initData();
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, clubs);
         autoCompleteTextView.setThreshold(1);
@@ -52,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (clubs.contains(autoCompleteTextView.getText().toString())) {
-                    user.setClub(autoCompleteTextView.getText().toString());
+                    int index = clubs.indexOf(autoCompleteTextView.getText().toString());
+                    user.setClubId(clubs_id.get(index));
+
                     startActivity(new Intent(MainActivity.this, ConsumerActivity.class));
                 }
             }
@@ -60,9 +70,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData(){
-        clubs.add("Bello");
-        clubs.add("Rama bar");
-        clubs.add("Polemika");
+        db.collection("Clubs")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            String Club_name = user.getClub();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String club = document.get("Name").toString();
+                                String club_id = document.getId();
+                                clubs.add(club);
+                                clubs_id.add(club_id);
+                            }
+
+                        } else {
+                            Log.w("firestoretest", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 
 

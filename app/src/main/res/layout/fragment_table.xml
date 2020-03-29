@@ -34,28 +34,14 @@
         app:layout_constraintBottom_toTopOf="@+id/pick_table_imbt"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tableb_table_taken_txtv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:text="Sto je zauzet"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
-
     <ImageButton
         android:id="@+id/pick_table_imbt"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginLeft="45dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/numberPicker"
+        app:layout_constraintStart_toStartOf="@+id/numberPicker"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <View
@@ -106,42 +92,4 @@
             android:textSize="40sp" />
     </androidx.cardview.widget.CardView>
 
-    <ImageButton
-        android:id="@+id/tablef_leave_table_but"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/pick_table_imbt"
-        app:srcCompat="@android:drawable/ic_delete" />
-
-    <EditText
-        android:id="@+id/tablef_table_password_edtx"
-        android:textColorHint="@color/white"
-        android:layout_width="167dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="invisible"
-        android:ems="10"
-        android:hint="pristupni kod"
-        android:inputType="number"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/tableb_table_taken_txtv"
-        app:layout_constraintTop_toBottomOf="@+id/tableb_table_taken_txtv" />
-
-    <ImageButton
-        android:id="@+id/tablef_confiram_pass_imbt"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tablef_table_password_edtx"
-        app:srcCompat="@drawable/ic_check_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

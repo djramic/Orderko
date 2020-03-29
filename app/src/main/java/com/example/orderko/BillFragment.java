@@ -25,6 +25,8 @@ public class BillFragment extends Fragment {
     private ListView history_card_list;
     private HistoryListAdapter h_adapter;
     private Button clear_history_but;
+    private User user;
+    private UserDatabaseHelper userDb;
 
 
     @Nullable
@@ -33,6 +35,8 @@ public class BillFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_bill, container, false);
         ordersDb = new OrdersDatabaseHelper(getContext());
         h_adapter = new HistoryListAdapter(getContext(),h_cards);
+        user = User.getInstance();
+        userDb = new UserDatabaseHelper(getContext());
 
         history_card_list = v.findViewById(R.id.orders_history_list);
         clear_history_but = v.findViewById(R.id.bill_clear_history_but);
@@ -89,6 +93,10 @@ public class BillFragment extends Fragment {
                 ordersDb.clearTable();
                 h_cards.clear();
                 history_card_list.setAdapter(h_adapter);
+                user.setUserBill("0");
+                user.setUserLastBill("0");
+                userDb.insertData("0,",user.getUserBill(),user.getTable(),user.getUserLastBill(),user.getClub(),"0");
+                ((ConsumerActivity)getActivity()).updateBill();
             }
         });
 
@@ -105,6 +113,7 @@ public class BillFragment extends Fragment {
         }
         return dates;
     }
+
 
 
 }

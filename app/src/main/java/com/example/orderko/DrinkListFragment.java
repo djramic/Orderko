@@ -20,8 +20,13 @@ import androidx.fragment.app.Fragment;
 
 import com.diegodobelo.expandingview.ExpandingItem;
 import com.diegodobelo.expandingview.ExpandingList;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +42,7 @@ public class DrinkListFragment extends Fragment {
     private DatabaseReference myRef;
     private DatabaseReference tableRef;
     private User user;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
 
@@ -48,27 +54,21 @@ public class DrinkListFragment extends Fragment {
         expandingList = v.findViewById(R.id.expanding_list_main);
         user = User.getInstance();
 
-        Log.d("usertable","Imas sto:" +  user.getTable());
-
         myDb = new DatabaseHelper(getActivity());
-        drinks = (List<Drink>)getArguments().get("DrinkList");
-        club = (String)getArguments().get("Club");
-        Log.d("databasetest","Klub koji trazim: " + club);
+
 
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference(club + "/orders");
         tableRef = database.getReference(club + "/tables");
 
 
-        //Log.d("firestoretest",drinks.toString());
-        myDb.clearTable();
-        for(Drink drink : drinks) {
-            boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0",drink.getPrice());
-            if(!isInserted){
-                Log.d("databasetest","Eroor while adding");
-            }
+        if(drinks.size() == 0)
+        {
+            Log.d("drinklist","pravim novu listu");
+            myDb.clearTable();
+            getDrinkList();
         }
-        initData();
+       createDrinkList();
 
 
         button = v.findViewById(R.id.order_but);
@@ -77,40 +77,24 @@ public class DrinkListFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-
-                    StringBuffer buffer = new StringBuffer();
-                    Cursor res = myDb.getOrder();
-                    while (res.moveToNext()) {
-                    buffer.append("ID :" + res.getString(0) + "\n");
-                    buffer.append("Drink :" + res.getString(1) + "\n");
-                    buffer.append("Category :" + res.getString(2) + "\n");
-                    buffer.append("Bulk :" + res.getString(3) + "\n");
-                    buffer.append("Quantity :" + res.getString(4) + "\n\n");
-                        String id = myRef.push().getKey();
-                        Order order = new Order(id, res.getString(1),res.getString(2), res.getString(4),res.getString(3),user.getTable());
-                        myRef.child(id).setValue(order);
-                    }
-                    Log.d("databasetest" , buffer.toString());
-                    getFragmentManager().beginTransaction().detach(DrinkListFragment.this).attach(DrinkListFragment.this).commit();
-
-                }else {
-                    Toast.makeText(getActivity(),"Niste izabrali nijedan sto", Toast.LENGTH_LONG).show();
-                }*/
                 if(user.getTable() != null) {
                     OrderDialogClass cdd = new OrderDialogClass(getActivity());
                     cdd.show();
                 }else{
                     Toast.makeText(getContext(),"Moraš prvo izabrati sto", Toast.LENGTH_LONG).show();
                 }
-
             }
         });
 
         return v;
     }
 
-    private void initData() {
+    public void clearDrinkList(){
+        Log.d("drinklist","cistim listu pica");
+        drinks.clear();
+    }
+
+    private void createDrinkList() {
         Cursor res = myDb.getAllData();
         List<Drink> drinks_adapter= new ArrayList<>();
         Drink drink;
@@ -197,5 +181,39 @@ public class DrinkListFragment extends Fragment {
 
         }
 
+    }
+
+    public void getDrinkList() {
+        db.collection("Clubs/" + user.getClubId() + "/Drink")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("test", document.getId() + " => " + document.getData());
+                                String name = document.getData().get("Name").toString();
+                                String category = document.getData().get("Category").toString();
+                                String bulk = document.getData().get("Bulk").toString();
+                                String price = document.getData().get("Price").toString();
+                                Log.w("firestoretest", "Naziv pica: " + name + ", Kategorija pica: " + category + ", Kolicina pica: " + bulk);
+                                Drink drink = new Drink("0",name,category,bulk,"0", price);
+                                drinks.add(drink);
+
+                            }
+                            myDb.clearTable();
+                            for(Drink drink : drinks) {
+                                boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0",drink.getPrice());
+                                if(!isInserted){
+                                    Log.d("databasetest","Eroor while adding");
+                                }
+                            }
+                            createDrinkList();
+
+                        } else {
+                            Log.w("firestoretest", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
     }
 }

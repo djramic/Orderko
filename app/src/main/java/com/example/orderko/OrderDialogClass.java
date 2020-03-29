@@ -99,7 +99,6 @@ public class OrderDialogClass extends Dialog{
                     sum = sum + (quantitiy * price);
 
                 }
-                int user_bi = Integer.parseInt(user.getUserBill());
 
                 Cursor userRes = userDb.getData();
                 String user_bill = "0";
@@ -107,29 +106,19 @@ public class OrderDialogClass extends Dialog{
                     user_bill= userRes.getString(2);
                     Log.d("tablebill","Ukupni racun korisnika do sada" + user_bill);
                 }
-                int bill = Integer.parseInt(user_bill);
+                int bill;
+                if(user_bill != null) {
+                    bill = Integer.parseInt(user_bill);
+                }else{
+                    bill = 0;
+                }
+
                 if(userDb.updateBill(String.valueOf(sum + bill))){
                     Log.d("tablebill","Uspesno sam stavio u db" + String.valueOf(sum + bill));
                 }
                 user.setUserBill(String.valueOf(bill + sum));
                 userDb.updateLastBill(String.valueOf(bill + sum));
 
-                int table_bill = 0;
-                if(user.getTableBill() != null) {
-                    table_bill = Integer.parseInt(user.getTableBill());
-                }
-                Log.d("tablebill","tablebill je" + user.getTableBill());
-                user.setTableBill(String.valueOf( table_bill + sum));
-
-                tableRef.child(user.getTable()).child("table_bill").setValue(user.getTableBill());
-
-
-
-                Cursor read = userDb.getData();
-                StringBuffer buffer = new StringBuffer();
-                while (read.moveToNext()) {
-                    Log.d("userdb", read.getString(0) +" "+ read.getString(1) +" "+ read.getString(2)+" "+ read.getString(3));
-                }
 
                 ConsumerActivity act = (ConsumerActivity)c;
                 act.refreshFragment();

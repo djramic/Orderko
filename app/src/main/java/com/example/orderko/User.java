@@ -8,12 +8,21 @@ public class User {
     private String club;
     private String tableBill;
     private String usersNum;
+    private String clubId;
     private static User user;
 
     public static  User getInstance() {
         if(user == null)
             user = new User();
         return user;
+    }
+
+    public String getClubId() {
+        return clubId;
+    }
+
+    public void setClubId(String clubId) {
+        this.clubId = clubId;
     }
 
     public String getUsersNum() {
