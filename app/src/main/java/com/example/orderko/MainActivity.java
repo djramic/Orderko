@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 if (clubs.contains(autoCompleteTextView.getText().toString())) {
                     int index = clubs.indexOf(autoCompleteTextView.getText().toString());
                     user.setClubId(clubs_id.get(index));
+                    user.setClub(autoCompleteTextView.getText().toString());
 
                     startActivity(new Intent(MainActivity.this, ConsumerActivity.class));
                 }

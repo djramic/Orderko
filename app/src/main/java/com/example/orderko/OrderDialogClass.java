@@ -119,10 +119,6 @@ public class OrderDialogClass extends Dialog{
                 user.setUserBill(String.valueOf(bill + sum));
                 userDb.updateLastBill(String.valueOf(bill + sum));
 
-
-                ConsumerActivity act = (ConsumerActivity)c;
-                act.refreshFragment();
-
                 String time_and_date = getTimeAndDate();
                 res = myDb.getOrder();
                 while(res.moveToNext()) {
@@ -139,6 +135,9 @@ public class OrderDialogClass extends Dialog{
                 Toast.makeText(getContext(),"Porudzbina je poslata", Toast.LENGTH_LONG).show();
 
                 dismiss();
+
+                ConsumerActivity act = (ConsumerActivity)c;
+                act.refreshFragment();
 
 
             }

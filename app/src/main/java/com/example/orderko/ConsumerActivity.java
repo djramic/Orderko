@@ -155,12 +155,8 @@ public class ConsumerActivity extends AppCompatActivity{
     }
 
     public void refreshFragment(){
-        Cursor cur = userDb.getData();
         updateBill();
-        Fragment selectedFragment = null;
-        selectedFragment = new DrinkListFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_contaner,selectedFragment)
-                .commit();
+        drinkListFragment.createDrinkList();
     }
 
     public void updateBill() {

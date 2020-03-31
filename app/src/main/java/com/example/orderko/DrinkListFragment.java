@@ -51,28 +51,21 @@ public class DrinkListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_drink_list, container, false);
 
+        Log.d("drinklist","Krejiram drink fregment");
         expandingList = v.findViewById(R.id.expanding_list_main);
+        button = v.findViewById(R.id.order_but);
+
         user = User.getInstance();
-
         myDb = new DatabaseHelper(getActivity());
-
-
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference(club + "/orders");
-        tableRef = database.getReference(club + "/tables");
-
 
         if(drinks.size() == 0)
         {
-            Log.d("drinklist","pravim novu listu");
-            myDb.clearTable();
+            Log.d("drinklist","preuzimam novu listu");
             getDrinkList();
         }
-       createDrinkList();
-
-
-        button = v.findViewById(R.id.order_but);
-
+        else {
+            createDrinkList();
+        }
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +87,17 @@ public class DrinkListFragment extends Fragment {
         drinks.clear();
     }
 
-    private void createDrinkList() {
+    public void createDrinkList() {
+        Log.d("drinklist","cistim bazu sa picima....");
+        myDb.clearTable();
+        expandingList.removeAllViews();
+        for(Drink drink : drinks) {
+            boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0",drink.getPrice());
+            if(!isInserted){
+                Log.d("databasetest","Eroor while adding");
+            }
+        }
+
         Cursor res = myDb.getAllData();
         List<Drink> drinks_adapter= new ArrayList<>();
         Drink drink;
@@ -103,8 +106,6 @@ public class DrinkListFragment extends Fragment {
                     res.getString(4), res.getString(5));
             drinks_adapter.add(drink);
         }
-
-
 
         ArrayList<String> categorys = new ArrayList<>();
 
@@ -200,13 +201,6 @@ public class DrinkListFragment extends Fragment {
                                 Drink drink = new Drink("0",name,category,bulk,"0", price);
                                 drinks.add(drink);
 
-                            }
-                            myDb.clearTable();
-                            for(Drink drink : drinks) {
-                                boolean isInserted = myDb.insertData(drink.getName(),drink.getCategory(),drink.getBulk(),"0",drink.getPrice());
-                                if(!isInserted){
-                                    Log.d("databasetest","Eroor while adding");
-                                }
                             }
                             createDrinkList();
 
